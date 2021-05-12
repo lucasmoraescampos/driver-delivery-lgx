@@ -1,0 +1,19 @@
+ion-content {
+    --background: #F0F4FA;
+}
+
+h6 {
+    font-size: 1rem;
+    line-height: 1.325rem;
+    font-weight: 500;
+}
+
+p {
+    font-size: 0.9rem;
+    line-height: 1.15rem;
+}
+
+ion-progress-bar {
+    --buffer-background: var(--ion-color-light);
+    margin-top: 10px;
+}

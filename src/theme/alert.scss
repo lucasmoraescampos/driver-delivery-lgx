@@ -1,0 +1,65 @@
+.alert-custom-container {
+    padding: 16px !important;
+}
+
+.alert-custom-popup {
+    width: 400px !important;
+    padding: 11px !important;
+}
+
+.alert-custom-image {
+    margin: 5px auto 15px !important;
+}
+
+.alert-custom-icon.swal2-error,
+.alert-custom-icon.swal2-success,
+.alert-custom-icon.swal2-question,
+.alert-custom-icon.swal2-warning,
+.alert-custom-icon.swal2-info {
+    zoom: 0.75;
+}
+
+.alert-custom-close-button {
+    box-shadow: none !important;
+
+    &:hover {
+        color: var(--ion-color-medium) !important;
+    }
+}
+
+.alert-custom-cancel-button {
+    background: transparent !important;
+    color: var(--ion-color-medium-tint) !important;
+    font-weight: 500 !important;
+    box-shadow: none !important;
+}
+
+.alert-custom-confirm-button {
+    width: 100% !important;
+    height: 45px !important;
+    border-radius: 5px !important;
+    background: var(--ion-color-primary) !important;
+    font-weight: 600 !important;
+    box-shadow: none !important;
+}
+
+.alert-custom-title {
+    font-size: 1.125rem !important;
+    font-weight: 500 !important;
+    color: var(--ion-color-dark) !important;
+    padding: 0 5px !important;
+}
+
+.alert-custom-content {
+    font-size: 1rem !important;
+    color: var(--ion-color-medium) !important;
+}
+
+.alert-custom-header {
+    padding: 0 !important;
+}
+
+.alert-custom-actions {
+    padding: 0 !important;
+    margin: 10px 0 0 !important;
+}

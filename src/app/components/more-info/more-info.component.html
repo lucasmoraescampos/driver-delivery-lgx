@@ -1,0 +1,150 @@
+<ion-header class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-title>More Info</ion-title>
+
+    <ion-buttons slot="end">
+
+      <ion-button (click)="dismiss()">
+
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <div class="ion-scroll">
+
+    <ion-grid>
+
+      <ion-row *ngIf="data.name">
+
+        <ion-col size="6">
+
+          <ion-label>Name:</ion-label>
+
+        </ion-col>
+
+        <ion-col class="ion-text-end" size="6">
+
+          <ion-label>{{ data.name }}</ion-label>
+
+        </ion-col>
+
+      </ion-row>
+
+      <ion-row *ngIf="data.time">
+
+        <ion-col size="6">
+
+          <ion-label>Time:</ion-label>
+
+        </ion-col>
+
+        <ion-col class="ion-text-end" size="6">
+
+          <ion-label>{{ data.time | slice:0:5 }}</ion-label>
+
+        </ion-col>
+
+      </ion-row>
+
+      <ion-row *ngIf="data.address">
+
+        <ion-col size="6">
+
+          <ion-label>Address:</ion-label>
+
+        </ion-col>
+
+        <ion-col class="ion-text-end" size="6">
+
+          <ion-label>{{ data.address }}</ion-label>
+
+        </ion-col>
+
+      </ion-row>
+
+      <ion-row *ngIf="data.phone">
+
+        <ion-col size="6">
+
+          <ion-label>Phone:</ion-label>
+
+        </ion-col>
+
+        <ion-col class="ion-text-end" size="6">
+
+          <ion-label>{{ data.phone }}</ion-label>
+
+        </ion-col>
+
+      </ion-row>
+
+      <ion-row *ngIf="data.status > 1">
+
+        <ion-col size="6">
+
+          <ion-label>Status:</ion-label>
+
+        </ion-col>
+
+        <ion-col class="ion-text-end" size="6">
+
+          <ion-badge mode="ios" color="success" *ngIf="data.status == 2">Completed</ion-badge>
+
+          <ion-badge mode="ios" color="danger" *ngIf="data.status == 3">Skipped</ion-badge>
+
+        </ion-col>
+
+      </ion-row>
+
+      <ion-row *ngIf="data.note">
+
+        <ion-col size="6">
+
+          <ion-label>Note:</ion-label>
+
+        </ion-col>
+
+        <ion-col class="ion-text-end" size="6">
+
+          <ion-label>{{ data.note }}</ion-label>
+
+        </ion-col>
+
+      </ion-row>
+
+      <ion-row *ngIf="data.image">
+
+        <ion-col size="6">
+
+          <ion-label>Image:</ion-label>
+
+        </ion-col>
+
+        <ion-col size="6">
+
+          <ion-img-viewer
+            [title]="data?.name ? data.name : undefined" 
+            [text]="data?.note ? data.note : undefined" 
+            scheme="dark" 
+            [src]="data.image">
+          </ion-img-viewer>
+
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+
+  </div>
+
+</ion-content>

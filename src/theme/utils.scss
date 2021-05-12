@@ -1,0 +1,71 @@
+ion-grid {
+    --ion-grid-padding: 8px;
+    --ion-grid-width: 100%;
+
+    ion-col {
+        --ion-grid-column-padding: 8px;
+        --ion-grid-column-padding-lg: 8px;
+        --ion-grid-column-padding-md: 8px;
+        --ion-grid-column-padding-sm: 8px;
+        --ion-grid-column-padding-xl: 8px;
+        --ion-grid-column-padding-xs: 8px;
+    }
+}
+
+ion-item {
+    --padding-start: 16px;
+    --inner-padding-end: 16px;
+    --border-color: var(--ion-color-light);
+}
+
+ion-card {
+    margin: 0;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px var(--ion-color-light-shade);
+    animation: popIn 0.2s calc(var(--animation-order) * 30ms) both ease-in;
+}
+
+span.ellipse {
+    margin-left: 5px;
+    margin-right: 5px;
+    font-size: 16px;
+
+    &::before {
+        content: "•";
+    }
+}
+
+ion-button {
+    margin: 0;
+}
+
+div.ion-scroll {
+    overflow-y: auto;
+    height: 100%;
+}
+
+@media (pointer: fine) {
+    div.ion-scroll {
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: var(--ion-color-light-shade);
+        }
+    }
+}
+
+@keyframes popIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.6) translateY(-8px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}

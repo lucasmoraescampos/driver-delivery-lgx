@@ -3,13 +3,16 @@
 
 /** Ionic CSS Variables **/
 :root {
+
+  --ion-font-family: "mazzard";
+  
   /** primary **/
-  --ion-color-primary: #3880ff;
+  --ion-color-primary: #FC9D20;
   --ion-color-primary-rgb: 56, 128, 255;
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #3171e0;
-  --ion-color-primary-tint: #4c8dff;
+  --ion-color-primary-shade: #c97d19;
+  --ion-color-primary-tint: #fcb04c;
 
   /** secondary **/
   --ion-color-secondary: #3dc2ff;
@@ -28,12 +31,12 @@
   --ion-color-tertiary-tint: #6370ff;
 
   /** success **/
-  --ion-color-success: #2dd36f;
+  --ion-color-success: #22bb33;
   --ion-color-success-rgb: 45, 211, 111;
   --ion-color-success-contrast: #ffffff;
   --ion-color-success-contrast-rgb: 255, 255, 255;
-  --ion-color-success-shade: #28ba62;
-  --ion-color-success-tint: #42d77d;
+  --ion-color-success-shade: #1ea82d;
+  --ion-color-success-tint: #38c147;
 
   /** warning **/
   --ion-color-warning: #ffc409;
@@ -44,12 +47,12 @@
   --ion-color-warning-tint: #ffca22;
 
   /** danger **/
-  --ion-color-danger: #eb445a;
+  --ion-color-danger: #ff2509;
   --ion-color-danger-rgb: 235, 68, 90;
   --ion-color-danger-contrast: #ffffff;
   --ion-color-danger-contrast-rgb: 255, 255, 255;
-  --ion-color-danger-shade: #cf3c4f;
-  --ion-color-danger-tint: #ed576b;
+  --ion-color-danger-shade: #E52108;
+  --ion-color-danger-tint: #FF3A21;
 
   /** dark **/
   --ion-color-dark: #222428;

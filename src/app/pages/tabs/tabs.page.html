@@ -1,0 +1,31 @@
+<ion-tabs>
+
+  <ion-tab-bar slot="bottom">
+
+    <ion-tab-button [selected]="tabActive == 'routes'" (click)="routes()">
+
+      <ion-icon name="git-branch-outline"></ion-icon>
+
+      <ion-label>Routes</ion-label>
+
+    </ion-tab-button>
+
+    <ion-tab-button [selected]="tabActive == 'map'" (click)="map()">
+
+      <ion-icon name="map-outline"></ion-icon>
+
+      <ion-label>Map</ion-label>
+
+    </ion-tab-button>
+
+    <ion-tab-button [selected]="tabActive == 'stops'" (click)="stops()">
+
+      <ion-icon name="location-outline"></ion-icon>
+
+      <ion-label>Stops</ion-label>
+
+    </ion-tab-button>
+
+  </ion-tab-bar>
+
+</ion-tabs>

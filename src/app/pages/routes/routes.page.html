@@ -1,0 +1,59 @@
+<app-header></app-header>
+
+<ion-content>
+
+    <div class="ion-scroll">
+
+        <ion-grid>
+
+            <ion-row>
+
+                <ion-col size-sm="6" size-lg="4" size-xl="3" *ngFor="let project of projects; let i=index">
+
+                    <ion-card button="true" [style]="{ '--animation-order': i }" (click)="stops(project.hash)">
+
+                        <ion-item lines="full">
+
+                            <ion-icon slot="start" name="checkmark-circle" color="success" *ngIf="project.status == 2"></ion-icon>
+
+                            <ion-label>
+
+                                <h6>{{ project.name }}</h6>
+
+                                <p>{{ project.created_at | date }}</p>
+
+                                <p>
+                                    
+                                    {{ project.routes.length }} stops
+                                    
+                                    <span class="ellipse"></span>
+                                    
+                                    {{ distance(project.routes) | number:'1.1-1' }} km
+
+                                    <span class="ellipse"></span>
+                                    
+                                    {{ duration(project) | number:'1.0-1' }} min
+                                
+                                </p>
+
+                                <ion-progress-bar [value]="progress(project)" [color]="pb.value == 1 ? 'primary' : 'medium'" *ngIf="project.status != 0" #pb></ion-progress-bar>
+
+                                <ion-progress-bar color="medium" type="indeterminate" *ngIf="project.status == 0"></ion-progress-bar>
+
+                            </ion-label>
+
+                        </ion-item>
+
+                    </ion-card>
+
+                </ion-col>
+
+            </ion-row>
+
+        </ion-grid>
+
+    </div>
+
+    <app-loading></app-loading>
+
+</ion-content>

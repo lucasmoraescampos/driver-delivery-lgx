@@ -1,0 +1,138 @@
+<app-header></app-header>
+
+<ion-content>
+
+    <div class="ion-scroll">
+
+        <ion-grid>
+
+            <ion-row>
+
+                <ion-col size-xs="12" size-md="6" size-lg="4" size-xl="3" *ngIf="project">
+
+                    <ion-card button="true" [style]="{ '--animation-order': 0 }" (click)="moreInfo()">
+
+                        <ion-grid>
+
+                            <ion-row>
+
+                                <ion-col size="12">
+
+                                    <h6>
+
+                                        <ion-icon name="car-outline" *ngIf="project.status == 0"></ion-icon>
+
+                                        <ion-icon name="checkmark-circle" color="success" *ngIf="project.status != 0">
+                                        </ion-icon>
+
+                                        <span>{{ project.driver.name }}</span>
+
+                                        <ion-badge mode="ios" color="medium" *ngIf="project.status == 0">{{
+                                            project.driver.start_time | slice:0:5 }}</ion-badge>
+
+                                        <ion-badge mode="ios" color="success" *ngIf="project.status != 0">{{
+                                            project.driver.start_time | slice:0:5 }}</ion-badge>
+
+                                    </h6>
+
+                                    <p>{{ project.driver.start_address }}</p>
+
+                                </ion-col>
+
+                                <ion-col class="ion-text-end" size="12" *ngIf="project.status == 0">
+
+                                    <ion-button size="small" color="success" mode="ios" (click)="$event.stopPropagation(); startProject()">
+                                        
+                                        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon> Start
+                                    
+                                    </ion-button>
+
+                                </ion-col>
+
+                            </ion-row>
+
+                        </ion-grid>
+
+                    </ion-card>
+
+                </ion-col>
+
+                <ion-col size-xs="12" size-md="6" size-lg="4" size-xl="3"
+                    *ngFor="let route of project?.routes; let i=index">
+
+                    <ion-card button="true" [style]="{ '--animation-order': i+1 }" (click)="moreInfo(i)">
+
+                        <ion-grid>
+
+                            <ion-row>
+
+                                <ion-col size="12">
+
+                                    <h6>
+
+                                        <ion-icon name="location-outline" *ngIf="route.status < 2"></ion-icon>
+
+                                        <ion-icon name="checkmark-circle" color="success" *ngIf="route.status == 2">
+                                        </ion-icon>
+
+                                        <ion-icon name="close-circle" color="danger" *ngIf="route.status == 3">
+                                        </ion-icon>
+
+                                        <span>{{ route.end_name }}</span>
+
+                                        <ion-badge mode="ios" color="medium" *ngIf="route.status < 2">{{ time(i) }}
+                                        </ion-badge>
+
+                                        <ion-badge mode="ios" color="success" *ngIf="route.status == 2">{{ time(i) }}
+                                        </ion-badge>
+
+                                        <ion-badge mode="ios" color="danger" *ngIf="route.status == 3">{{ time(i) }}
+                                        </ion-badge>
+
+                                    </h6>
+
+                                    <p>{{ route.end_address }}</p>
+
+                                </ion-col>
+
+                            </ion-row>
+
+                            <ion-row *ngIf="route.status == 1">
+
+                                <ion-col size="6">
+
+                                    <ion-button size="small" expand="block" color="success" mode="ios" (click)="$event.stopPropagation(); arrive(route)">
+                                        
+                                        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon> Arrive
+
+                                    </ion-button>
+
+                                </ion-col>
+
+                                <ion-col size="6">
+
+                                    <ion-button size="small" expand="block" color="danger" mode="ios" (click)="$event.stopPropagation(); skip(route)">
+                                        
+                                        <ion-icon slot="start" name="close-circle-outline"></ion-icon> Skip
+                                    
+                                    </ion-button>
+
+                                </ion-col>
+
+                            </ion-row>
+
+                        </ion-grid>
+
+                    </ion-card>
+
+                </ion-col>
+
+            </ion-row>
+
+        </ion-grid>
+
+    </div>
+
+    <app-loading></app-loading>
+
+</ion-content>

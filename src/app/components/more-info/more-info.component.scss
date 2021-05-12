@@ -1,0 +1,16 @@
+ion-content {
+    --background: #FFFFFF;
+}
+
+ion-img-viewer {
+    border-radius: 3px;
+    margin-left: auto;
+    padding: 5px;
+    border: 1px solid var(--ion-color-light-shade);
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}

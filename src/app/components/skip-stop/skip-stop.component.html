@@ -1,0 +1,93 @@
+<ion-header class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-title>Skip "{{ data.name }}"</ion-title>
+
+    <ion-buttons slot="end">
+
+      <ion-button (click)="dismiss()">
+
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+
+      </ion-button>
+
+    </ion-buttons>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <div class="ion-scroll">
+
+    <ion-grid>
+
+      <ion-row>
+
+        <ion-col size="12">
+
+          <ion-label>Choose a reason:</ion-label>
+
+          <ion-list>
+
+            <ion-radio-group [(ngModel)]="option" (ionChange)="changeOption($event)">
+          
+              <ion-item lines="full">
+
+                <ion-label>Nobody home</ion-label>
+
+                <ion-radio slot="start" color="danger" [value]="1"></ion-radio>
+
+              </ion-item>
+          
+              <ion-item lines="full">
+
+                <ion-label>Wrong address</ion-label>
+
+                <ion-radio slot="start" color="danger" [value]="2"></ion-radio>
+
+              </ion-item>
+          
+              <ion-item lines="full">
+
+                <ion-label>Other</ion-label>
+
+                <ion-radio slot="start" color="danger" [value]="0"></ion-radio>
+
+              </ion-item>
+
+            </ion-radio-group>
+
+          </ion-list>
+
+        </ion-col>
+
+        <ion-col class="animate__animated animate__fadeIn" size="12" *ngIf="!option">
+
+          <ion-label>Why are you skipping this stop?</ion-label>
+
+          <textarea maxlength="200" rows="4" placeholder="Enter here..." [(ngModel)]="note"></textarea>
+
+        </ion-col>
+
+        <ion-col size="12">
+
+          <ion-button expand="block" mode="ios" color="danger" (click)="skip()">
+
+            <ion-icon slot="start" name="close-circle-outline"></ion-icon> Skip This Stop
+
+          </ion-button>
+
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+
+  </div>
+
+</ion-content>
+
+<app-loading></app-loading>
