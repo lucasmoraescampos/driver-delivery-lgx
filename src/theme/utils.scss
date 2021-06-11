@@ -36,12 +36,36 @@ span.ellipse {
 }
 
 ion-button {
+    --border-radius: 5px;
     margin: 0;
 }
 
 div.ion-scroll {
     overflow-y: auto;
     height: 100%;
+}
+
+ion-list-header {
+    font-size: 1rem;
+}
+
+input {
+    width: 100%;
+    height: 44.8px;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 1px;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+textarea {
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 82px;
+    padding: 8px;
+    border-radius: 5px;
+    margin-top: 5px;
 }
 
 @media (pointer: fine) {

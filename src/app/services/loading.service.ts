@@ -31,5 +31,10 @@ export class LoadingService {
       this.loadingSubject.next(false);
     }
   }
+
+  public clear() {
+    this.stack = [];
+    this.loadingSubject.next(false);
+  }
   
 }

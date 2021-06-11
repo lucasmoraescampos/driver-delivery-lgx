@@ -9,6 +9,7 @@ import { SkipStopComponent } from 'src/app/components/skip-stop/skip-stop.compon
 import { AlertService } from 'src/app/services/alert.service';
 import { ApiService } from 'src/app/services/api.service';
 import { LoadingService } from 'src/app/services/loading.service';
+import { TabsService } from 'src/app/services/tabs.service';
 
 @Component({
   selector: 'app-stops',
@@ -26,7 +27,8 @@ export class StopsPage implements OnInit, OnDestroy {
     private loadingSrv: LoadingService,
     private modalCtrl: ModalController,
     private alertSrv: AlertService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private tabsSrv: TabsService
   ) { }
 
   ngOnInit() {
@@ -42,6 +44,8 @@ export class StopsPage implements OnInit, OnDestroy {
 
           this.project = project;
 
+          this.setTime();
+
         }
 
       });
@@ -53,27 +57,8 @@ export class StopsPage implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  public time(index: number) {
-
-    let duration = 0;
-
-    for (let i = 0; i <= index; i++) {
-      duration += this.project.routes[i].duration;
-    }
-
-    const start_time = this.project.driver.start_time.split(':');
-
-    const date = new Date();
-
-    date.setHours(Number(start_time[0]), Number(start_time[1]), 0, 0);
-
-    date.setSeconds(date.getSeconds() + duration);
-
-    return date.toLocaleTimeString(navigator.language, {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-
+  ionViewWillEnter() {
+    this.tabsSrv.setTabIndex(2);
   }
 
   public async moreInfo(index?: number) {
@@ -83,12 +68,14 @@ export class StopsPage implements OnInit, OnDestroy {
       componentProps: {
         data: {
           name:     index !== undefined ? this.project.routes[index].end_name     : this.project.driver.name,
-          time:     index !== undefined ? this.time(index)                        : this.project.driver.start_time,
+          time:     index !== undefined ? this.project.routes[index].time         : this.project.driver.start_time,
           address:  index !== undefined ? this.project.routes[index].end_address  : this.project.driver.start_address,
           phone:    index !== undefined ? this.project.routes[index].end_phone    : null,
           image:    index !== undefined ? this.project.routes[index].image        : null,
           note:     index !== undefined ? this.project.routes[index].note         : null,
-          status:   index !== undefined ? this.project.routes[index].status       : null
+          bags:     index !== undefined ? this.project.routes[index].bags         : null,
+          status:   index !== undefined ? this.project.routes[index].status       : null,
+          order_id: index !== undefined ? this.project.routes[index].end_order_id : null,
         }
       }
     });
@@ -97,11 +84,11 @@ export class StopsPage implements OnInit, OnDestroy {
 
   }
 
-  public startProject() {
+  public startStop() {
 
     this.loadingSrv.show();
 
-    this.apiSrv.startProject()
+    this.apiSrv.startStop()
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
 
@@ -109,10 +96,29 @@ export class StopsPage implements OnInit, OnDestroy {
 
         if (res.success) {
 
-          this.alertSrv.toast({
-            icon: 'success',
-            message: res.message
-          });
+          for (let i = 0; i < this.project.routes.length; i++) {
+
+            if (this.project.routes[i].status == 1) {
+
+              const route = this.project.routes[i];
+
+              const time = Math.round(route.duration / 60);
+
+              const word = time > 1 ? 'minutes' : 'minute';
+
+              this.alertSrv.sms({
+                icon: 'success',
+                title: res.message,
+                message: `Send an sms to ${route.end_name} to let him know that your delivery is on its way`,
+                body: `Hi there! Your Shef delivery is on the way and will arrive in approximately ${time} ${word}!`,
+                phone: route.end_phone
+              });
+
+              break;
+
+            }
+
+          }
 
         }
 
@@ -153,6 +159,33 @@ export class StopsPage implements OnInit, OnDestroy {
 
   }
 
+  private setTime() {
+
+    let duration = 0;
+
+    const split = this.project.driver.start_time.split(':');
+
+    const date = new Date();
+
+    this.project.routes.forEach((route: any) => {
+
+      duration += route.duration;
+
+      date.setHours(Number(split[0]), Number(split[1]), 0, 0);
+
+      date.setSeconds(date.getSeconds() + duration);
+
+      route.time = date.toLocaleTimeString(navigator.language, {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      duration += route.downtime;
+      
+    });
+
+  }
+
   private initProject() {
 
     this.loadingSrv.show();
@@ -164,7 +197,11 @@ export class StopsPage implements OnInit, OnDestroy {
         this.loadingSrv.hide();
 
         if (res.success) {
+
           this.project = res.data;
+
+          this.setTime();
+
         }
 
       });

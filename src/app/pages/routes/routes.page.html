@@ -28,11 +28,11 @@
                                     
                                     <span class="ellipse"></span>
                                     
-                                    {{ distance(project.routes) | number:'1.1-1' }} km
+                                    {{ project.total_distance / 1000 | number:'1.0-1' }} km
 
                                     <span class="ellipse"></span>
                                     
-                                    {{ duration(project) | number:'1.0-1' }} min
+                                    {{ project.total_time / 60 | number:'1.0-0' }} min
                                 
                                 </p>
 

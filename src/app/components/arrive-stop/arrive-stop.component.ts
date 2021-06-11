@@ -21,7 +21,11 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
   public webUseInput: boolean;
 
+  public bags: number;
+
   public note: string;
+
+  public option: boolean = false;
 
   private unsubscribe = new Subject();
 
@@ -45,7 +49,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
   }
 
   public dismiss() {
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss(false);
   }
 
   public moreInfo() {
@@ -53,22 +57,37 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
   }
 
   public confirm() {
-    this.alertSrv.show({
-      icon: 'warning',
-      message: 'Submit a confirmation photo',
-      confirmButtonText: '<ion-icon slot="start" name="camera"></ion-icon> Get Photo',
-      onConfirm: () => {
-        this.getPhoto();
-      }
-    });
+
+    if (this.option && !this.bags) {
+        
+      this.alertSrv.toast({
+        icon: 'error',
+        message: 'Enter the number of bags collected'
+      });
+
+    }
+
+    else {
+
+      this.alertSrv.chooseImage({
+        icon: 'warning',
+        title: 'Submit a confirmation photo',
+        confirmButtonText: this.webUseInput ? 'Choose Image' : 'Open Camera',
+        onConfirm: () => {
+          this.getPhoto();
+        }
+      });
+
+    }
+    
   }
 
   private async getPhoto() {
 
     const image = await Camera.getPhoto({
-      quality: 100,
+      quality: 80,
       resultType: CameraResultType.DataUrl,
-      source: CameraSource.Photos,
+      source: CameraSource.Prompt,
       webUseInput: this.webUseInput
     });
 
@@ -78,7 +97,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
       
       this.alertSrv.toast({
         icon: 'error',
-        message: 'O arquivo enviado não é uma imagem'
+        message: 'The uploaded file is not an image'
       });
 
     }
@@ -87,7 +106,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
       
       this.alertSrv.toast({
         icon: 'error',
-        message: 'A imagem enviada deve ter no máximo 8 MB'
+        message: 'The uploaded image must have a maximum of 8 MB'
       });
 
     }
@@ -96,7 +115,13 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
       this.loadingSrv.show();
 
-      this.apiSrv.completeStop(image.dataUrl, this.note)
+      const data: any = {
+        image: image.dataUrl,
+        bags: this.option ? this.bags : null,
+        note: this.note
+      } 
+
+      this.apiSrv.arriveStop(data)
         .pipe(takeUntil(this.unsubscribe))
         .subscribe(res => {
 
@@ -104,30 +129,75 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
           if (res.success) {
 
-            if (res.data.status == 2) {
+            if (res.data.status == 4) {
 
-              this.alertSrv.show({
+              const route = res.data.routes[res.data.routes.length - 1];
+
+              this.alertSrv.sms({
                 icon: 'success',
-                message: 'All stops on this project have been completed.',
-                confirmButtonText: 'Go to Routes',
-                showCancelButton: false,
+                title: res.message,
+                message: `Send delivery confirmation sms to ${route.end_name}`,
+                body: `Woohoo! Your Shef delivery was completed today at ${route.arrived_at.slice(11, 16)}${route.arrived_at.slice(19)}`,
+                phone: route.end_phone,
                 onConfirm: () => {
-                  this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
+
+                  this.alertSrv.show({
+                    icon: 'success',
+                    message: 'All stops on this project have been completed.',
+                    confirmButtonText: 'Go to Routes',
+                    showCancelButton: false,
+                    onConfirm: () => {
+                      this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
+                    }
+                  });
+
+                },
+                onCancel: () => {
+
+                  this.alertSrv.show({
+                    icon: 'success',
+                    message: 'All stops on this project have been completed.',
+                    confirmButtonText: 'Go to Routes',
+                    showCancelButton: false,
+                    onConfirm: () => {
+                      this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
+                    }
+                  });
+
                 }
               });
+
+              this.modalCtrl.dismiss(true);
   
             }
 
             else {
 
-              this.alertSrv.toast({
-                icon: 'success',
-                message: res.message
-              });
+              const length = res.data.routes.length;
 
+              for (let index = length - 1; index >= 0; index--) {
+
+                const route = res.data.routes[index];
+
+                if (route.status == 2) {
+
+                  this.alertSrv.sms({
+                    icon: 'success',
+                    title: res.message,
+                    message: `Send delivery confirmation sms to ${route.end_name}`,
+                    body: `Woohoo! Your Shef delivery was completed today at ${route.arrived_at.slice(11, 16)}${route.arrived_at.slice(19)}`,
+                    phone: route.end_phone
+                  });
+
+                  this.modalCtrl.dismiss(true);
+
+                  break;
+
+                }
+
+              }
+              
             }
-
-            this.modalCtrl.dismiss();
 
           }
 

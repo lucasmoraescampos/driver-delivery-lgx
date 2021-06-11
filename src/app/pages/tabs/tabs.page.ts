@@ -1,10 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigHelper } from 'src/app/helpers/config.helper';
 import { ApiService } from 'src/app/services/api.service';
+import { TabsService } from 'src/app/services/tabs.service';
 
 @Component({
   selector: 'app-tabs',
@@ -13,15 +14,15 @@ import { ApiService } from 'src/app/services/api.service';
 })
 export class TabsPage implements OnInit, OnDestroy {
 
-  public tabActive: string;
+  public tabActiveIndex: number;
 
   private unsubscribe = new Subject();
 
   constructor(
     private navCtrl: NavController,
-    private router: Router,
     private apiSrv: ApiService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private tabsSrv: TabsService
   ) {
 
   }
@@ -30,12 +31,7 @@ export class TabsPage implements OnInit, OnDestroy {
 
     this.apiSrv.setDriverHash(this.route.snapshot.paramMap.get('driver'));
 
-    this.router.events.pipe(takeUntil(this.unsubscribe))
-      .subscribe(route => {
-        if (route instanceof NavigationEnd) {
-          setTimeout(() => this.tabActive = route.url.split('/')[2], 300);
-        }
-      });
+    this.tabsSrv.tabActiveIndex.pipe(takeUntil(this.unsubscribe)).subscribe(index => this.tabActiveIndex = index);
 
   }
 

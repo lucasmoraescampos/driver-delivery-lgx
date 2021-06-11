@@ -10,6 +10,7 @@ import { MoreInfoComponent } from 'src/app/components/more-info/more-info.compon
 import { ArriveStopComponent } from 'src/app/components/arrive-stop/arrive-stop.component';
 import { SkipStopComponent } from 'src/app/components/skip-stop/skip-stop.component';
 import { AlertService } from 'src/app/services/alert.service';
+import { TabsService } from 'src/app/services/tabs.service';
 
 const { Browser } = Plugins;
 
@@ -46,7 +47,8 @@ export class MapPage implements OnInit, OnDestroy {
     private apiSrv: ApiService,
     private loadingSrv: LoadingService,
     private modalCtrl: ModalController,
-    private alertSrv: AlertService
+    private alertSrv: AlertService,
+    private tabsSrv: TabsService
   ) { }
 
   ngOnInit() {
@@ -63,6 +65,8 @@ export class MapPage implements OnInit, OnDestroy {
         if (project) {
 
           this.project = project;
+          
+          this.setTime();
 
           this.setMarkers();
 
@@ -81,27 +85,8 @@ export class MapPage implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  public time(index: number) {
-
-    let duration = 0;
-
-    for (let i = 0; i <= index; i++) {
-      duration += this.project.routes[i].duration;
-    }
-
-    const start_time = this.project.driver.start_time.split(':');
-
-    const date = new Date();
-
-    date.setHours(Number(start_time[0]), Number(start_time[1]), 0, 0);
-
-    date.setSeconds(date.getSeconds() + duration);
-
-    return date.toLocaleTimeString(navigator.language, {
-      hour: '2-digit',
-      minute:'2-digit'
-    });
-
+  ionViewWillEnter() {
+    this.tabsSrv.setTabIndex(1);
   }
 
   public slideChanged(ev: any) {
@@ -127,12 +112,14 @@ export class MapPage implements OnInit, OnDestroy {
       componentProps: {
         data: {
           name:     index !== undefined ? this.project.routes[index].end_name     : this.project.driver.name,
-          time:     index !== undefined ? this.time(index)                        : this.project.driver.start_time,
+          time:     index !== undefined ? this.project.routes[index].time         : this.project.driver.start_time,
           address:  index !== undefined ? this.project.routes[index].end_address  : this.project.driver.start_address,
           phone:    index !== undefined ? this.project.routes[index].end_phone    : null,
           image:    index !== undefined ? this.project.routes[index].image        : null,
           note:     index !== undefined ? this.project.routes[index].note         : null,
-          status:   index !== undefined ? this.project.routes[index].status       : null
+          bags:     index !== undefined ? this.project.routes[index].bags         : null,
+          status:   index !== undefined ? this.project.routes[index].status       : null,
+          order_id: index !== undefined ? this.project.routes[index].end_order_id : null,
         }
       }
     });
@@ -161,11 +148,11 @@ export class MapPage implements OnInit, OnDestroy {
 
   }
 
-  public startProject() {
+  public startStop() {
 
     this.loadingSrv.show();
 
-    this.apiSrv.startProject()
+    this.apiSrv.startStop()
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(res => {
 
@@ -173,10 +160,33 @@ export class MapPage implements OnInit, OnDestroy {
 
         if (res.success) {
 
-          this.alertSrv.toast({
-            icon: 'success',
-            message: res.message
-          });
+          for (let i = 0; i < this.project.routes.length; i++) {
+
+            if (this.project.routes[i].status == 1) {
+
+              const route = this.project.routes[i];
+
+              const time = Math.round(route.duration / 60);
+
+              const word = time > 1 ? 'minutes' : 'minute';
+
+              this.alertSrv.sms({
+                icon: 'success',
+                title: res.message,
+                message: `Send an sms to ${route.end_name} to let him know that your delivery is on its way`,
+                body: `Hi there! Your Shef delivery is on the way and will arrive in approximately ${time} ${word}!`,
+                phone: route.end_phone
+              });
+
+              if (route.end_id == this.project.routes[0].end_id) {
+                this.slides.slideNext();
+              }
+
+              break;
+
+            }
+
+          }
 
         }
 
@@ -199,7 +209,7 @@ export class MapPage implements OnInit, OnDestroy {
     });
 
     return await modal.present();
-
+ 
   }
 
   public async skip(route: any) {
@@ -217,14 +227,38 @@ export class MapPage implements OnInit, OnDestroy {
 
   }
 
+  private setTime() {
+
+    let duration = 0;
+
+    const split = this.project.driver.start_time.split(':');
+
+    const date = new Date();
+
+    this.project.routes.forEach((route: any) => {
+
+      duration += route.duration;
+
+      date.setHours(Number(split[0]), Number(split[1]), 0, 0);
+
+      date.setSeconds(date.getSeconds() + duration);
+
+      route.time = date.toLocaleTimeString(navigator.language, {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+
+      duration += route.downtime;
+      
+    });
+
+  }
+
   private setMarkers() {
 
     const marker = new google.maps.Marker({
       map: this.map,
-      position: {
-        lat: this.project.driver.start_lat,
-        lng: this.project.driver.start_lng
-      },
+      position: new google.maps.LatLng(this.project.driver.start_lat, this.project.driver.start_lng),
       zIndex: 999
     });
 
@@ -236,10 +270,7 @@ export class MapPage implements OnInit, OnDestroy {
 
       const marker = new google.maps.Marker({
         map: this.map,
-        position: {
-          lat: route.end_lat,
-          lng: route.end_lng
-        },
+        position: new google.maps.LatLng(route.end_lat, route.end_lng),
         zIndex: (index + 1) * 9,
         label: {
           text: String(index + 1),
@@ -283,21 +314,35 @@ export class MapPage implements OnInit, OnDestroy {
 
     else if (this.project.status == 1) {
 
-      this.project.routes.forEach((route: any, index: number) => {
+      const length = this.project.routes.length;
+
+      for (let index = length - 1; index >= 0; index--) {
+
+        const route = this.project.routes[index];
 
         if (route.status == 1) {
 
           this.slides.slideTo(index + 1, 1000);
-        
+
+          break;
+
         }
 
-      });
+        else if (route.status == 2 || route.status == 3) {
+
+          this.slides.slideTo(index + 2, 1000);
+
+          break;
+          
+        }
+
+      }
 
     }
 
     else {
 
-      this.slides.slideTo(this.markers.length - 1 + 1, 1000);
+      this.slides.slideTo(this.markers.length, 1000);
 
     }
 
@@ -333,6 +378,8 @@ export class MapPage implements OnInit, OnDestroy {
         if (res.success) {
 
           this.project = res.data;
+
+          this.setTime();
 
           this.setMarkers();
 

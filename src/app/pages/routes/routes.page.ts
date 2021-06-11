@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ConfigHelper } from 'src/app/helpers/config.helper';
 import { ApiService } from 'src/app/services/api.service';
 import { LoadingService } from 'src/app/services/loading.service';
+import { TabsService } from 'src/app/services/tabs.service';
 
 @Component({
   selector: 'app-routes',
@@ -20,7 +21,8 @@ export class RoutesPage implements OnInit, OnDestroy {
   constructor(
     private apiSrv: ApiService,
     private loadingSrv: LoadingService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private tabsSrv: TabsService
   ) { }
 
   ngOnInit() {
@@ -49,32 +51,12 @@ export class RoutesPage implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  public distance(routes: any[]) {
-
-    let distance = 0;
-
-    routes.forEach(route => {
-      distance += route.distance;
-    });
-
-    return distance / 1000;
-
+  ionViewWillEnter() {
+    this.tabsSrv.setTabIndex(0);
   }
 
   public stops(project_hash: string) {
     this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/stops/route/${project_hash}`);
-  }
-
-  public duration(project: any) {
-
-    let duration = 0;
-
-    project.routes.forEach((route: any) => {
-      duration += route.duration;
-    });
-
-    return duration / 60;
-
   }
 
   public progress(project: any) {

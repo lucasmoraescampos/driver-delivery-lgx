@@ -122,6 +122,38 @@
 
       </ion-row>
 
+      <ion-row *ngIf="data.order_id">
+
+        <ion-col size="6">
+
+          <ion-label>Order ID:</ion-label>
+
+        </ion-col>
+
+        <ion-col class="ion-text-end" size="6">
+
+          <ion-label>{{ data.order_id }}</ion-label>
+
+        </ion-col>
+
+      </ion-row>
+
+      <ion-row *ngIf="data.bags">
+
+        <ion-col size="6">
+
+          <ion-label>Bags</ion-label>
+
+        </ion-col>
+
+        <ion-col class="ion-text-end" size="6">
+
+          <ion-label>{{ data.bags }} bags</ion-label>
+
+        </ion-col>
+
+      </ion-row>
+
       <ion-row *ngIf="data.image">
 
         <ion-col size="6">

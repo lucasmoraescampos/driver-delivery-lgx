@@ -1,7 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ConfigHelper } from 'src/app/helpers/config.helper';
 import { AlertService } from 'src/app/services/alert.service';
 import { ApiService } from 'src/app/services/api.service';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -25,7 +26,8 @@ export class SkipStopComponent implements OnInit, OnDestroy {
     private modalCtrl: ModalController,
     private alertSrv: AlertService,
     private loadingSrv: LoadingService,
-    private apiSrv: ApiService
+    private apiSrv: ApiService,
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() { }
@@ -36,7 +38,7 @@ export class SkipStopComponent implements OnInit, OnDestroy {
   }
 
   public dismiss() {
-    this.modalCtrl.dismiss();
+    this.modalCtrl.dismiss(false);
   }
 
   public changeOption(ev: any) {
@@ -44,7 +46,7 @@ export class SkipStopComponent implements OnInit, OnDestroy {
       this.note = 'Nobody home';
     }
     else if (ev.detail.value == 2) {
-      this.note = 'Nobody home';
+      this.note = 'Wrong address';
     }
     else {
       this.note = '';
@@ -56,7 +58,6 @@ export class SkipStopComponent implements OnInit, OnDestroy {
     if (!this.note) {
 
       this.alertSrv.toast({
-        
         icon: 'warning',
         message: 'Tell us why you are skipping this parade!'
       });
@@ -75,12 +76,75 @@ export class SkipStopComponent implements OnInit, OnDestroy {
 
           if (res.success) {
 
-            this.alertSrv.toast({
-              icon: 'success',
-              message: res.message
-            });
+            if (res.data.status == 4) {
 
-            this.modalCtrl.dismiss();
+              const route = res.data.routes[res.data.routes.length - 1];
+
+              this.alertSrv.sms({
+                icon: 'success',
+                title: res.message,
+                message: `Send SMS informing ${route.end_name} that his delivery was not completed`,
+                body: `Sorry, your delivery was not completed today.%0A%0APlease contact our team to reschedule.`,
+                phone: route.end_phone,
+                onConfirm: () => {
+
+                  this.alertSrv.show({
+                    icon: 'success',
+                    message: 'All stops on this project have been completed.',
+                    confirmButtonText: 'Go to Routes',
+                    showCancelButton: false,
+                    onConfirm: () => {
+                      this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
+                    }
+                  });
+
+                },
+                onCancel: () => {
+
+                  this.alertSrv.show({
+                    icon: 'success',
+                    message: 'All stops on this project have been completed.',
+                    confirmButtonText: 'Go to Routes',
+                    showCancelButton: false,
+                    onConfirm: () => {
+                      this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
+                    }
+                  });
+
+                }
+              });
+
+              this.modalCtrl.dismiss(true);
+
+            }
+
+            else {
+
+              const length = res.data.routes.length;
+
+              for (let index = length - 1; index >= 0; index--) {
+
+                const route = res.data.routes[index];
+
+                if (route.status == 3) {
+
+                  this.alertSrv.sms({
+                    icon: 'success',
+                    title: res.message,
+                    message: `Send SMS informing ${route.end_name} that his delivery was not completed`,
+                    body: `Sorry, your delivery was not completed today.%0A%0APlease contact our team to reschedule.`,
+                    phone: route.end_phone
+                  });
+
+                  this.modalCtrl.dismiss(true);
+
+                  break;
+
+                }
+
+              }
+
+            }
 
           }
 

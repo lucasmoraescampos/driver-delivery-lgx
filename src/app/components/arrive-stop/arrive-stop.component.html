@@ -22,33 +22,49 @@
 
   <div class="ion-scroll">
 
+    <ion-list>
+
+      <ion-list-header>Did you collect bags?</ion-list-header>
+
+      <ion-radio-group [(ngModel)]="option">
+    
+        <ion-item lines="full">
+
+          <ion-label>No</ion-label>
+
+          <ion-radio slot="start" color="success" [value]="false"></ion-radio>
+
+        </ion-item>
+    
+        <ion-item lines="full">
+
+          <ion-label>Yes</ion-label>
+
+          <ion-radio slot="start" color="success" [value]="true"></ion-radio>
+
+        </ion-item>
+
+      </ion-radio-group>
+
+    </ion-list>
+
     <ion-grid>
 
       <ion-row>
 
-        <ion-col size="12">
+        <ion-col class="animate__animated animate__fadeIn" size="12" *ngIf="option">
 
-          <textarea maxlength="200" rows="4" placeholder="Leave a note. (Optional)" [(ngModel)]="note"></textarea>
+          <ion-label>Enter the number of bags</ion-label>
 
-        </ion-col>
-
-        <ion-col size="12">
-
-          <ion-button expand="block" color="medium" mode="ios" (click)="moreInfo()">
-
-            <ion-icon slot="start" name="information-circle-outline"></ion-icon> More Info
-
-          </ion-button>
+          <input inputmode="numeric" [(ngModel)]="bags">
 
         </ion-col>
 
         <ion-col size="12">
 
-          <ion-button expand="block" mode="ios" color="success" (click)="confirm()">
+          <ion-label>Leave a note</ion-label>
 
-            <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon> Confirm Completion
-
-          </ion-button>
+          <textarea maxlength="200" rows="4" placeholder="Optional" [(ngModel)]="note"></textarea>
 
         </ion-col>
 
@@ -59,5 +75,37 @@
   </div>
 
 </ion-content>
+
+<ion-footer mode="ios">
+
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col size-xs="12" size-sm="6">
+
+        <ion-button expand="block" color="medium" mode="ios" (click)="moreInfo()">
+
+          <ion-icon slot="start" name="information-circle-outline"></ion-icon> More Info
+
+        </ion-button>
+
+      </ion-col>
+
+      <ion-col size-xs="12" size-sm="6">
+
+        <ion-button expand="block" mode="ios" color="success" (click)="confirm()">
+
+          <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon> Confirm Completion
+
+        </ion-button>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-footer>
 
 <app-loading></app-loading>

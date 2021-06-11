@@ -25,7 +25,7 @@ export class ApiService {
     private http: HttpClient
   ) { }
 
-  public getProjects() {
+  public getProjects() {    
     return this.http.get<HttpResult>(`${this.apiUrl}/driver/${this.driverHash}/projects`);
   }
 
@@ -33,7 +33,7 @@ export class ApiService {
     return this.http.get<HttpResult>(`${this.apiUrl}/driver/${this.driverHash}/project/${this.projectHash}`);
   }
 
-  public startProject() {
+  public startStop() {
     return this.http.post<HttpResult>(`${this.apiUrl}/driver/project/start`, {
       driver_hash: this.driverHash,
       project_hash: this.projectHash
@@ -45,18 +45,19 @@ export class ApiService {
     }));
   }
 
-  public completeStop(image: string, note?: string) {
-    return this.http.post<HttpResult>(`${this.apiUrl}/driver/project/complete`, {
-      driver_hash: this.driverHash,
-      project_hash: this.projectHash,
-      image: image,
-      note: note
-    }).pipe(map(res => {
-      if (res.success) {
-        this.projectSubject.next(res.data);
-      }
-      return res;
-    }));
+  public arriveStop(data: any) {
+
+    data.driver_hash = this.driverHash;
+
+    data.project_hash = this.projectHash;
+
+    return this.http.post<HttpResult>(`${this.apiUrl}/driver/project/arrive`, data)
+      .pipe(map(res => {
+        if (res.success) {
+          this.projectSubject.next(res.data);
+        }
+        return res;
+      }));
   }
 
   public skipStop(note?: string) {

@@ -41,7 +41,7 @@
 
                                 <ion-col class="ion-text-end" size="12" *ngIf="project.status == 0">
 
-                                    <ion-button size="small" color="success" mode="ios" (click)="$event.stopPropagation(); startProject()">
+                                    <ion-button size="small" color="success" mode="ios" (click)="$event.stopPropagation(); startStop()">
                                         
                                         <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon> Start
                                     
@@ -80,13 +80,13 @@
 
                                         <span>{{ route.end_name }}</span>
 
-                                        <ion-badge mode="ios" color="medium" *ngIf="route.status < 2">{{ time(i) }}
+                                        <ion-badge mode="ios" color="medium" *ngIf="route.status < 2">{{ route.time }}
                                         </ion-badge>
 
-                                        <ion-badge mode="ios" color="success" *ngIf="route.status == 2">{{ time(i) }}
+                                        <ion-badge mode="ios" color="success" *ngIf="route.status == 2">{{ route.time }}
                                         </ion-badge>
 
-                                        <ion-badge mode="ios" color="danger" *ngIf="route.status == 3">{{ time(i) }}
+                                        <ion-badge mode="ios" color="danger" *ngIf="route.status == 3">{{ route.time }}
                                         </ion-badge>
 
                                     </h6>
@@ -97,7 +97,21 @@
 
                             </ion-row>
 
-                            <ion-row *ngIf="route.status == 1">
+                            <ion-row class="animate__animated animate__fadeIn" *ngIf="project.routes[i-1]?.status > 1 && route.status == 0">
+
+                                <ion-col class="ion-text-end" size="12">
+
+                                    <ion-button size="small" color="success" mode="ios" (click)="$event.stopPropagation(); startStop()">
+                                        
+                                        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon> Start
+                                    
+                                    </ion-button>
+
+                                </ion-col>
+
+                            </ion-row>
+
+                            <ion-row class="animate__animated animate__fadeIn" *ngIf="route.status == 1">
 
                                 <ion-col size="6">
 

@@ -30,7 +30,7 @@ export class AlertService {
       title: options.message,
       showCancelButton: options.showCancelButton !== undefined ? options.showCancelButton : true,
       confirmButtonText: options.confirmButtonText ? options.confirmButtonText : 'Confirmar',
-      cancelButtonText: options.cancelButtonText ? options.cancelButtonText : 'Cancelar',
+      cancelButtonText: options.cancelButtonText ? options.cancelButtonText : 'Cancel',
       heightAuto: false,
       allowOutsideClick: false,
       customClass: this.customClass
@@ -67,93 +67,106 @@ export class AlertService {
     });
   }
 
-  public options(options: AlertOptions) {
+  public chooseImage(options: AlertOptions) {
 
     let html = document.createElement('div');
 
-    options.buttons.forEach(button => {
-      
-      const el = document.createElement('ion-button');
+    const el = document.createElement('ion-button');
 
-      el.style.marginTop = '10px';
-      
-      el.setAttribute('expand', 'block');
+    el.style.marginTop = '10px';
+    
+    el.setAttribute('mode', 'ios');
 
-      if (button.color) {
-        el.setAttribute('color', button.color);
+    el.setAttribute('expand', 'block');
+
+    el.setAttribute('color', 'primary');
+
+    el.innerHTML = 'Choose Image';
+
+    el.onclick = () => {
+      Swal.close();
+      if (options.onConfirm) {
+        options.onConfirm();
       }
-
-      if (button.fill) {
-        el.setAttribute('fill', button.fill);
-      }
-
-      if (button.icon) {
-        el.innerHTML = `<ion-icon slot="start" name="${button.icon}" src="${button.icon}"></ion-icon> ${button.text}`;
-      }
-
-      else {
-        el.innerText = button.text;
-      }
-
-      el.onclick = () => {
-        Swal.close();
-        button.callback();
-      };
-      
-      html.appendChild(el);
-
-    });
+    }
+    
+    html.appendChild(el);
 
     Swal.fire({
-      imageUrl: options.imageUrl ?? null,
+      icon: options.icon,
       imageWidth: 60,
       title: options.title,
       html: html,
-      cancelButtonText: 'Cancelar',
       showConfirmButton: false,
       showCancelButton: true,
+      cancelButtonText: 'Cancel',
       heightAuto: false,
       allowOutsideClick: false,
       customClass: this.customClass
+    }).then(result => {
+      if (options.onCancel) {
+        options.onCancel();
+      }
     });
+    
   }
 
-  public custom(options: AlertOptions) {
+  public sms(options: AlertOptions) {
+
+    let html = document.createElement('div');
+
+    if (options.message) {
+
+      const p = document.createElement('p');
+
+      p.style.marginTop = '0';
+
+      p.innerText = options.message;
+
+      html.appendChild(p);
+
+    }
+
+    const el = document.createElement('ion-button');
+
+    el.style.marginTop = '10px';
+    
+    el.setAttribute('mode', 'ios');
+
+    el.setAttribute('href', `sms:${options.phone};?&body=${options.body}`);
+
+    el.setAttribute('expand', 'block');
+
+    el.setAttribute('color', 'success');
+
+    el.innerHTML = '<ion-icon slot="start" name="mail-outline"></ion-icon> Send SMS';
+
+    el.onclick = () => {
+      Swal.close();
+      if (options.onConfirm) {
+        options.onConfirm();
+      }
+    }
+    
+    html.appendChild(el);
+
     Swal.fire({
-      imageUrl: options.imageUrl,
+      icon: options.icon,
       imageWidth: 60,
       title: options.title,
-      text: options.message,
-      showCancelButton: options.showCancelButton ?? false,
-      confirmButtonText: options.confirmButtonText ?? 'Ok',
-      cancelButtonText: options.cancelButtonText ?? 'Cancelar',
-      heightAuto: false,
-      allowOutsideClick: false,
-      customClass: this.customClass,
-    }).then(result => {
-      if (result.value) {
-        options.onConfirm();
-      }
-    });
-  }
-
-  public terms(options: AlertOptions) {
-    Swal.fire({
-      imageUrl: '../../../assets/icon/terms.svg',
-      imageWidth: 60,
-      title: 'Termos e condições',
-      html: 'Eu concordo com os <a>termos e condições</a>',
+      html: html,
+      showConfirmButton: false,
       showCancelButton: true,
-      confirmButtonText: options.confirmButtonText ? options.confirmButtonText : 'Confirmar',
-      cancelButtonText: options.cancelButtonText ? options.cancelButtonText : 'Cancelar',
+      cancelButtonText: 'Do not send',
       heightAuto: false,
       allowOutsideClick: false,
-      customClass: this.customClass,
+      customClass: this.customClass
     }).then(result => {
-      if (result.value) {
-        options.onConfirm();
+      if (options.onCancel) {
+        options.onCancel();
       }
     });
+    
   }
 
 }
@@ -162,6 +175,8 @@ interface AlertOptions {
   title?: string;
   imageUrl?: string;
   message?: string;
+  body?: string;
+  phone?: string;
   confirmButtonText?: string;
   cancelButtonText?: string;
   showCancelButton?: boolean;

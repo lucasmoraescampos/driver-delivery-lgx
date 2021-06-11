@@ -63,7 +63,7 @@
 
                             <ion-col size="12">
 
-                                <ion-button size="small" color="success" mode="ios" (click)="startProject()">
+                                <ion-button size="small" color="success" mode="ios" (click)="startStop()">
 
                                     <ion-icon slot="start" name="checkmark-outline"></ion-icon> Start
 
@@ -101,7 +101,7 @@
 
                     <ion-card-subtitle class="ion-text-end">
 
-                        <ion-badge mode="ios" color="medium" *ngIf="route.status < 2">{{ time(i) }}</ion-badge>
+                        <ion-badge mode="ios" color="medium" *ngIf="route.status < 2">{{ route.time }}</ion-badge>
 
                         <ion-badge mode="ios" color="success" *ngIf="route.status == 2">Completed</ion-badge>
 
@@ -142,7 +142,21 @@
 
                         </ion-row>
 
-                        <ion-row *ngIf="route.status == 1">
+                        <ion-row class="animate__animated animate__fadeIn" *ngIf="project.routes[i-1]?.status > 1 && route.status == 0">
+
+                            <ion-col size="12">
+
+                                <ion-button size="small" color="success" mode="ios" (click)="startStop()">
+
+                                    <ion-icon slot="start" name="checkmark-outline"></ion-icon> Start
+
+                                </ion-button>
+
+                            </ion-col>
+
+                        </ion-row>
+
+                        <ion-row class="animate__animated animate__fadeIn" *ngIf="route.status == 1">
 
                             <ion-col size="6">
 
