@@ -9,15 +9,15 @@ const routes: Routes = [
     children: [
       {
         path: 'routes',
-        loadChildren: () => import('../routes/routes.module').then(m => m.RoutesPageModule)
+        loadChildren: () => import('./routes/routes.module').then(m => m.RoutesPageModule)
       },
       {
         path: 'map/route/:route',
-        loadChildren: () => import('../map/map.module').then(m => m.MapPageModule)
+        loadChildren: () => import('./map/map.module').then(m => m.MapPageModule)
       },
       {
         path: 'stops/route/:route',
-        loadChildren: () => import('../stops/stops.module').then(m => m.StopsPageModule)
+        loadChildren: () => import('./stops/stops.module').then(m => m.StopsPageModule)
       }
     ]
   },

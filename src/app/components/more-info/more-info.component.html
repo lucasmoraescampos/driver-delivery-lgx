@@ -2,11 +2,19 @@
 
   <ion-toolbar>
 
-    <ion-title>More Info</ion-title>
+    <ion-title>
+
+      More Info
+
+      <span *ngIf="data.type == 'driver'">(Driver)</span>
+
+      <span *ngIf="data.type == 'stop'">(Stop)</span>
+
+    </ion-title>
 
     <ion-buttons slot="end">
 
-      <ion-button (click)="dismiss()">
+      <ion-button color="dark" (click)="dismiss()">
 
         <ion-icon slot="icon-only" name="close"></ion-icon>
 
@@ -50,7 +58,7 @@
 
         <ion-col class="ion-text-end" size="6">
 
-          <ion-label>{{ data.time | slice:0:5 }}</ion-label>
+          <ion-label>{{ data.time }}</ion-label>
 
         </ion-col>
 
@@ -82,7 +90,13 @@
 
         <ion-col class="ion-text-end" size="6">
 
-          <ion-label>{{ data.phone }}</ion-label>
+          <ion-button class="phone" color="success" size="small" fill="outline" (click)="phoneOptions()">
+
+            <ion-icon slot="start" name="call-outline"></ion-icon>
+
+            {{ data.phone }}
+
+          </ion-button>
 
         </ion-col>
 
@@ -164,11 +178,8 @@
 
         <ion-col size="6">
 
-          <ion-img-viewer
-            [title]="data?.name ? data.name : undefined" 
-            [text]="data?.note ? data.note : undefined" 
-            scheme="dark" 
-            [src]="data.image">
+          <ion-img-viewer [title]="data?.name ? data.name : undefined" [text]="data?.note ? data.note : undefined"
+            scheme="dark" [src]="data.image">
           </ion-img-viewer>
 
         </ion-col>
@@ -180,3 +191,11 @@
   </div>
 
 </ion-content>
+
+<ion-footer mode="ios" class="ion-padding" *ngIf="data.status == 3">
+
+  <ion-button expand="block" fill="outline" color="medium" (click)="changeStatus()">Change status to <ion-badge
+      color="success">Completed</ion-badge>
+  </ion-button>
+
+</ion-footer>

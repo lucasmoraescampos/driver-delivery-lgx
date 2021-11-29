@@ -1,0 +1,45 @@
+<ion-header class="ion-no-border">
+
+  <ion-toolbar>
+
+    <ion-title>Choose Map</ion-title>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <ion-grid>
+
+    <ion-row>
+
+      <ion-col class="ion-text-center" (click)="apple()" *ngIf="device.operatingSystem == 'ios' || device.operatingSystem == 'mac'">
+
+        <img class="apple" src="../../../assets/icon/apple-maps.svg">
+
+        <p>Apple</p>
+
+      </ion-col>
+
+      <ion-col class="ion-text-center" (click)="google()">
+
+        <img class="google" src="../../../assets/icon/google-maps.svg">
+
+        <p>Google</p>
+
+      </ion-col>
+
+      <ion-col class="ion-text-center" (click)="waze()">
+
+        <img class="waze" src="../../../assets/icon/waze.svg">
+
+        <p>Waze</p>
+
+      </ion-col>
+
+    </ion-row>
+
+  </ion-grid>
+
+</ion-content>

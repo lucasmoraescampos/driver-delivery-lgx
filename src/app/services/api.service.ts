@@ -45,11 +45,11 @@ export class ApiService {
     }));
   }
 
-  public arriveStop(data: any) {
+  public arriveStop(data: FormData) {
 
-    data.driver_hash = this.driverHash;
-
-    data.project_hash = this.projectHash;
+    data.append('driver_hash', this.driverHash);
+    
+    data.append('project_hash', this.projectHash);
 
     return this.http.post<HttpResult>(`${this.apiUrl}/driver/project/arrive`, data)
       .pipe(map(res => {
@@ -71,6 +71,21 @@ export class ApiService {
       }
       return res;
     }));
+  }
+
+  public changeStatus(stop_id: number, data: FormData) {
+
+    data.append('driver_hash', this.driverHash);
+    
+    data.append('project_hash', this.projectHash);
+
+    return this.http.post<HttpResult>(`${this.apiUrl}/driver/project/status/${stop_id}`, data)
+      .pipe(map(res => {
+        if (res.success) {
+          this.projectSubject.next(res.data);
+        }
+        return res;
+      }));
   }
 
   public setDriverHash(driverHash: string) {

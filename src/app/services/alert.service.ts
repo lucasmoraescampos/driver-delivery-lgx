@@ -156,7 +156,7 @@ export class AlertService {
       title: options.title,
       html: html,
       showConfirmButton: false,
-      showCancelButton: true,
+      showCancelButton: false,
       cancelButtonText: 'Do not send',
       heightAuto: false,
       allowOutsideClick: false,

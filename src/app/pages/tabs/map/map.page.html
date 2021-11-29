@@ -1,0 +1,193 @@
+<app-header></app-header>
+
+<ion-content>
+
+    <div class="map animate__animated animate__fadeIn" #map></div>
+
+    <ion-slides class="animate__animated animate__fadeInRight" [options]="options"
+        (ionSlideDidChange)="slideChanged($event)" [hidden]="!project">
+
+        <ion-slide></ion-slide>
+
+        <ion-slide>
+
+            <ion-card>
+
+                <ion-card-header>
+
+                    <ion-item lines="none">
+
+                        <ion-label>Driver {{ project?.driver.name }}</ion-label>
+
+                        <ion-badge class="time" slot="end" mode="ios" color="medium" *ngIf="project?.status == 0">{{ project?.driver.time }}</ion-badge>
+
+                        <ion-badge class="time" slot="end" mode="ios" color="success" *ngIf="project?.status == 1">Started</ion-badge>
+
+                    </ion-item>
+
+                </ion-card-header>
+
+                <ion-card-content>
+
+                    <ion-grid>
+
+                        <ion-row>
+
+                            <ion-col size="12">
+
+                                <h6>{{ project?.routes[0].start_address }}</h6>
+
+                            </ion-col>
+
+                            <ion-col class="ion-text-end" size="12">
+
+                                <ion-button size="small" fill="clear" mode="ios" color="medium" (click)="moreInfo()">
+
+                                    <ion-icon slot="start" name="information-circle-outline"></ion-icon> More info
+
+                                </ion-button>
+
+                                <ion-button size="small" fill="outline" mode="ios" color="medium" (click)="directions()"
+                                    *ngIf="project?.status == 0">
+
+                                    <ion-icon slot="start" name="navigate-circle-outline"></ion-icon> Directions
+
+                                </ion-button>
+
+                            </ion-col>
+
+                        </ion-row>
+
+                        <ion-row *ngIf="project?.status == 0">
+
+                            <ion-col class="ion-text-end" size="12">
+
+                                <ion-button size="small" color="success" mode="ios" (click)="startStop()">
+
+                                    <ion-icon slot="start" name="checkmark-outline"></ion-icon> Start
+
+                                </ion-button>
+
+                            </ion-col>
+
+                        </ion-row>
+
+                    </ion-grid>
+
+                </ion-card-content>
+
+            </ion-card>
+
+        </ion-slide>
+
+        <ion-slide *ngFor="let route of project?.routes; let i=index">
+
+            <ion-card>
+
+                <ion-card-header>
+
+                    <ion-item lines="none">
+
+                        <ion-badge class="position" color="medium" *ngIf="route.status < 2">{{ i+1 }}</ion-badge>
+                        
+                        <ion-badge class="position" color="success" *ngIf="route.status == 2">{{ i+1 }}</ion-badge>
+
+                        <ion-badge class="position" color="danger" *ngIf="route.status == 3">{{ i+1 }}</ion-badge>
+
+                        <ion-label>{{ route.end_name }}</ion-label>
+
+                        <ion-badge class="time" mode="ios" color="medium" *ngIf="route.status < 2">{{ route.time }}</ion-badge>
+
+                        <ion-badge class="time" mode="ios" color="success" *ngIf="route.status == 2">Completed</ion-badge>
+
+                        <ion-badge class="time" mode="ios" color="danger" *ngIf="route.status == 3">Skipped</ion-badge>
+
+                    </ion-item>
+
+                </ion-card-header>
+
+                <ion-card-content>
+
+                    <ion-grid>
+
+                        <ion-row>
+
+                            <ion-col size="12">
+
+                                <h6>{{ route.end_address }}</h6>
+
+                            </ion-col>
+
+                            <ion-col class="ion-text-end" size="12">
+
+                                <ion-button size="small" fill="clear" color="medium" mode="ios" (click)="moreInfo(i)">
+
+                                    <ion-icon slot="start" name="information-circle-outline"></ion-icon> More info
+
+                                </ion-button>
+
+                                <ion-button size="small" fill="outline" color="medium" mode="ios"
+                                    (click)="directions(i)" *ngIf="route.status != 2">
+
+                                    <ion-icon slot="start" name="navigate-circle-outline"></ion-icon> Directions
+
+                                </ion-button>
+
+                            </ion-col>
+
+                        </ion-row>
+
+                        <ion-row class="animate__animated animate__fadeIn" *ngIf="project.routes[i-1]?.status > 1 && route.status == 0">
+
+                            <ion-col class="ion-text-end" size="12">
+
+                                <ion-button size="small" color="success" mode="ios" (click)="startStop()">
+
+                                    <ion-icon slot="start" name="checkmark-outline"></ion-icon> Start
+
+                                </ion-button>
+
+                            </ion-col>
+
+                        </ion-row>
+
+                        <ion-row class="animate__animated animate__fadeIn" *ngIf="route.status == 1">
+
+                            <ion-col size="6">
+
+                                <ion-button size="small" expand="block" color="success" mode="ios"
+                                    (click)="arrive(route)">
+
+                                    <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon> Arrive
+
+                                </ion-button>
+
+                            </ion-col>
+
+                            <ion-col size="6">
+
+                                <ion-button size="small" expand="block" color="danger" mode="ios" (click)="skip(route)">
+
+                                    <ion-icon slot="start" name="close-circle-outline"></ion-icon> Skip
+
+                                </ion-button>
+
+                            </ion-col>
+
+                        </ion-row>
+
+                    </ion-grid>
+
+                </ion-card-content>
+
+            </ion-card>
+
+        </ion-slide>
+
+        <ion-slide></ion-slide>
+
+    </ion-slides>
+
+    <app-loading></app-loading>
+
+</ion-content>

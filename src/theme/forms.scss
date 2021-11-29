@@ -1,0 +1,54 @@
+ion-input {
+    --padding-start: 8px !important;
+    --padding-end: 8px !important;
+    border: 0.55px solid var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.13))));
+    border-radius: 5px;
+    margin: 0;
+    height: 50px;
+}
+
+ion-select {
+    --padding-start: 8px !important;
+    --padding-end: 8px !important;
+    border: 0.55px solid var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.13))));
+    border-radius: 5px;
+    margin: 0;
+    height: 50px;
+}
+
+ion-textarea {
+    --padding-start: 8px !important;
+    --padding-end: 8px !important;
+    border: 0.55px solid var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.13))));
+    border-radius: 5px;
+    margin-top: 0 !important;
+    min-height: 50px;
+}
+
+ion-label.stacked {
+    font-size: 12px;
+    font-weight: 300;
+    position: absolute;
+    top: -1px;
+    left: 16px;
+    background: #fff;
+    z-index: 999999;
+}
+
+ion-button {
+    --border-radius: 5px;
+    --border-width: 0.55px;
+    --box-shadow: none;
+    font-size: 1rem;
+    height: 50px;
+    line-height: 1.5;
+    margin: 0;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+ion-button[size="small"] {
+    height: 36px;
+    font-size: 0.8rem;
+    font-weight: 400;
+}

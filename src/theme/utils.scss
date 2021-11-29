@@ -50,22 +50,37 @@ ion-list-header {
 }
 
 input {
+    background: #ffffff;
     width: 100%;
     height: 44.8px;
+    border-color: var(--ion-color-medium);
     border-style: solid;
     border-radius: 5px;
     border-width: 1px;
     padding: 8px;
-    margin-top: 5px;
 }
 
 textarea {
+    background: #ffffff;
     min-width: 100%;
     max-width: 100%;
     min-height: 82px;
     padding: 8px;
-    border-radius: 5px;
-    margin-top: 5px;
+    border-color: var(--ion-color-medium);
+}
+
+.choose-map .modal-wrapper {
+    width: 100%;
+    height: 130px;
+    position: absolute;
+    bottom: 0;
+}
+
+@media (min-width: 576px) {
+    .choose-map .modal-wrapper {
+        width: 300px;
+        height: 130px;
+    }
 }
 
 @media (pointer: fine) {

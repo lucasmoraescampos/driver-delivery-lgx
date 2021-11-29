@@ -6,7 +6,7 @@
 
     <ion-buttons slot="end">
 
-      <ion-button (click)="dismiss()">
+      <ion-button color="dark" (click)="dismiss()">
 
         <ion-icon slot="icon-only" name="close"></ion-icon>
 
@@ -21,6 +21,30 @@
 <ion-content>
 
   <div class="ion-scroll">
+
+    <div class="ion-padding">
+
+      <ion-label>Confirmation Photo</ion-label>
+
+      <ion-button class="choose-image" fill="clear" (click)="chooseImage()" *ngIf="!image">
+    
+        <div>
+    
+          <ion-icon name="image-outline"></ion-icon>
+    
+          Choose Image
+    
+        </div>
+    
+      </ion-button>
+    
+      <ion-thumbnail (click)="chooseImage()" *ngIf="image">
+    
+        <img [src]="image">
+    
+      </ion-thumbnail>
+    
+    </div>
 
     <ion-list>
 
@@ -82,7 +106,7 @@
 
     <ion-row>
 
-      <ion-col size-xs="12" size-sm="6">
+      <ion-col size-xs="12" size-sm="6" *ngIf="data.moreInfo">
 
         <ion-button expand="block" color="medium" mode="ios" (click)="moreInfo()">
 
@@ -92,7 +116,17 @@
 
       </ion-col>
 
-      <ion-col size-xs="12" size-sm="6">
+      <ion-col size-xs="12" size-sm="6" *ngIf="data.moreInfo">
+
+        <ion-button expand="block" mode="ios" color="success" (click)="confirm()">
+
+          <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon> Confirm Completion
+
+        </ion-button>
+
+      </ion-col>
+
+      <ion-col size="12" *ngIf="!data.moreInfo">
 
         <ion-button expand="block" mode="ios" color="success" (click)="confirm()">
 

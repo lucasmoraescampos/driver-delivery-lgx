@@ -1,0 +1,301 @@
+<ion-header>
+
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+
+      <ion-menu-button></ion-menu-button>
+
+    </ion-buttons>
+
+    <ion-title>Report</ion-title>
+
+  </ion-toolbar>
+
+  <ion-toolbar>
+
+    <div class="input-group">
+
+      <ion-datetime value="2019-10-01T15:43:40.394Z" display-timezone="utc"></ion-datetime>
+
+      <ion-datetime value="2019-10-01T15:43:40.394Z" display-timezone="utc"></ion-datetime>
+
+      <ion-button class="search" size="small" expand="block">
+
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+
+      </ion-button>
+
+    </div>
+
+  </ion-toolbar>
+
+  <ion-toolbar>
+
+    <ion-segment mode="md" [(ngModel)]="segment">
+
+      <ion-segment-button [value]="0">
+
+        <ion-label>On Time</ion-label>
+
+      </ion-segment-button>
+
+      <ion-segment-button [value]="1">
+
+        <ion-label>Bags</ion-label>
+
+      </ion-segment-button>
+
+      <ion-segment-button [value]="2">
+
+        <ion-label>Average</ion-label>
+
+      </ion-segment-button>
+
+    </ion-segment>
+
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content color="light">
+
+  <ion-card *ngIf="segment == 0">
+
+    <ion-card-header>
+
+      <ion-button class="download" fill="solid" size="small">Download</ion-button>
+
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <ion-list>
+
+        <ion-item lines="full">
+
+          <div class="date">
+              
+            <span class="day">01</span> 
+
+            <span class="month">Oct</span>
+          
+          </div>
+
+          <ion-label>
+            
+            <p><span>Early:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+
+            <p><span>On Time:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+
+            <p><span>Late:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+          
+          </ion-label>
+
+        </ion-item>
+
+        <ion-item lines="full">
+
+          <div class="date">
+              
+            <span class="day">01</span> 
+
+            <span class="month">Oct</span>
+          
+          </div>
+
+          <ion-label>
+            
+            <p><span>Early:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+
+            <p><span>On Time:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+
+            <p><span>Late:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+          
+          </ion-label>
+
+        </ion-item>
+
+        <ion-item lines="full">
+
+          <div class="date">
+              
+            <span class="day">01</span> 
+
+            <span class="month">Oct</span>
+          
+          </div>
+
+          <ion-label>
+            
+            <p><span>Early:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+
+            <p><span>On Time:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+
+            <p><span>Late:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+          
+          </ion-label>
+
+        </ion-item>
+
+        <ion-item lines="full">
+
+          <div class="date">
+              
+            <span class="day">01</span> 
+
+            <span class="month">Oct</span>
+          
+          </div>
+
+          <ion-label>
+            
+            <p><span>Early:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+
+            <p><span>On Time:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+
+            <p><span>Late:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
+          
+          </ion-label>
+
+        </ion-item>
+
+      </ion-list>
+
+    </ion-card-content>
+
+  </ion-card>
+
+  <ion-card *ngIf="segment == 1">
+
+    <ion-card-header>
+
+      <ion-button class="download" fill="solid" size="small">Download</ion-button>
+
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <ion-list>
+
+        <ion-item lines="full">
+
+          <span slot="start">21 Oct</span>
+
+          <ion-label class="ion-text-end">
+            
+            <ion-badge color="light">10 Bags</ion-badge>
+          
+          </ion-label>
+
+        </ion-item>
+
+        <ion-item lines="full">
+
+          <span slot="start">21 Oct</span>
+
+          <ion-label class="ion-text-end">
+            
+            <ion-badge color="light">10 Bags</ion-badge>
+          
+          </ion-label>
+
+        </ion-item>
+
+        <ion-item lines="full">
+
+          <span slot="start">21 Oct</span>
+
+          <ion-label class="ion-text-end">
+            
+            <ion-badge color="light">10 Bags</ion-badge>
+          
+          </ion-label>
+
+        </ion-item>
+
+        <ion-item lines="full">
+
+          <span slot="start">21 Oct</span>
+
+          <ion-label class="ion-text-end">
+            
+            <ion-badge color="light">10 Bags</ion-badge>
+          
+          </ion-label>
+
+        </ion-item>
+
+      </ion-list>
+
+    </ion-card-content>
+
+  </ion-card>
+
+  <ion-card *ngIf="segment == 2">
+
+    <ion-card-header>
+
+      <ion-button class="download" fill="solid" size="small">Download</ion-button>
+
+    </ion-card-header>
+
+    <ion-card-content>
+
+      <ion-list>
+
+        <ion-item lines="full">
+
+          <span slot="start">21 Oct</span>
+
+          <ion-label class="ion-text-end">
+            
+            <ion-badge color="light">4.9</ion-badge>
+          
+          </ion-label>
+
+        </ion-item>
+
+        <ion-item lines="full">
+
+          <span slot="start">21 Oct</span>
+
+          <ion-label class="ion-text-end">
+            
+            <ion-badge color="light">4.9</ion-badge>
+          
+          </ion-label>
+
+        </ion-item>
+
+        <ion-item lines="full">
+
+          <span slot="start">21 Oct</span>
+
+          <ion-label class="ion-text-end">
+            
+            <ion-badge color="light">4.9</ion-badge>
+          
+          </ion-label>
+
+        </ion-item>
+
+        <ion-item lines="full">
+
+          <span slot="start">21 Oct</span>
+
+          <ion-label class="ion-text-end">
+            
+            <ion-badge color="light">4.9</ion-badge>
+          
+          </ion-label>
+
+        </ion-item>
+
+      </ion-list>
+
+    </ion-card-content>
+
+  </ion-card>
+
+</ion-content>

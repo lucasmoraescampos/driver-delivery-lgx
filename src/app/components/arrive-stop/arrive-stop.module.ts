@@ -4,6 +4,7 @@ import { ArriveStopComponent } from './arrive-stop.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { LoadingModule } from '../loading/loading.module';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 @NgModule({
   declarations: [ArriveStopComponent],
@@ -12,6 +13,9 @@ import { LoadingModule } from '../loading/loading.module';
     IonicModule,
     FormsModule,
     LoadingModule
+  ],
+  providers: [
+    NgxImageCompressService
   ]
 })
 export class ArriveStopModule { }

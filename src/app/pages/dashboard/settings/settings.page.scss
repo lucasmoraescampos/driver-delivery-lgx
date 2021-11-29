@@ -1,0 +1,14 @@
+ion-card-title {
+    font-size: 1rem;
+}
+
+ion-item {
+    --background: transparent;
+}
+
+.terms-conditions {
+    max-height: 160px;
+    border: 0.55px solid var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.13))));
+    border-radius: 5px;
+    padding: 8px 16px;
+}

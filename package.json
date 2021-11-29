@@ -24,6 +24,7 @@
     "@ionic/angular": "^5.5.2",
     "@ionic/pwa-elements": "^3.0.2",
     "animate.css": "^4.1.1",
+    "ngx-image-compress": "^11.0.3",
     "ngx-ionic-image-viewer": "^0.7.4",
     "ngx-loading": "^8.0.0",
     "rxjs": "~6.6.0",

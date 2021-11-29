@@ -40,22 +40,11 @@ export class AppInterceptor implements HttpInterceptor {
 
                     this.alertSrv.toast({
                         icon: 'error',
-                        message: 'You are offline!'
+                        message: 'No Internet Connection!'
                     });
 
                     return of(err.message);
     
-                }
-
-                else {
-
-                    this.alertSrv.toast({
-                        icon: 'error',
-                        message: 'Unable to complete your request, please contact support!'
-                    });
-
-                    return throwError(err);
-
                 }
 
             });

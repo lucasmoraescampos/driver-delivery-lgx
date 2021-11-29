@@ -7,6 +7,8 @@ import { LoadingService } from 'src/app/services/loading.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { ConfigHelper } from 'src/app/helpers/config.helper';
+import { UtilsHelper } from 'src/app/helpers/utils.helper';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 const { Camera, Device } = Plugins;
 
@@ -27,20 +29,24 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
   public option: boolean = false;
 
+  public image: string;
+
   private unsubscribe = new Subject();
+
+  imgResultBeforeCompress:string;
+  imgResultAfterCompress:string;
 
   constructor(
     private modalCtrl: ModalController,
     private alertSrv: AlertService,
     private apiSrv: ApiService,
     private loadingSrv: LoadingService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private imageCompress: NgxImageCompressService
   ) { }
 
   ngOnInit() {
-
     Device.getInfo().then(device => this.webUseInput = device.platform === 'web');
-
   }
 
   ngOnDestroy() {
@@ -56,10 +62,43 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
     this.data.moreInfo();
   }
 
+  public async chooseImage() {
+
+    try {
+
+      const image = await Camera.getPhoto({
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Prompt,
+        webUseInput: this.webUseInput
+      });
+
+      this.loadingSrv.show();
+
+      this.image = await this.imageCompress.compressFile(image.dataUrl, 0, 50, 50);
+
+      this.loadingSrv.hide();
+
+    } catch (err) {
+
+      this.loadingSrv.hide();
+
+    }
+
+  }
+
   public confirm() {
 
-    if (this.option && !this.bags) {
-        
+    if (!this.image) {
+
+      this.alertSrv.toast({
+        icon: 'error',
+        message: 'Send a confirmation photo'
+      });
+
+    }
+
+    else if (this.option && !this.bags) {
+
       this.alertSrv.toast({
         icon: 'error',
         message: 'Enter the number of bags collected'
@@ -69,142 +108,260 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
     else {
 
-      this.alertSrv.chooseImage({
-        icon: 'warning',
-        title: 'Submit a confirmation photo',
-        confirmButtonText: this.webUseInput ? 'Choose Image' : 'Open Camera',
-        onConfirm: () => {
-          this.getPhoto();
-        }
-      });
-
-    }
-    
-  }
-
-  private async getPhoto() {
-
-    const image = await Camera.getPhoto({
-      quality: 80,
-      resultType: CameraResultType.DataUrl,
-      source: CameraSource.Prompt,
-      webUseInput: this.webUseInput
-    });
-
-    const allowTypes = ['gif', 'png', 'jpeg', 'bmp', 'webp'];
-
-    if (allowTypes.indexOf(image.format) == -1) {
-      
-      this.alertSrv.toast({
-        icon: 'error',
-        message: 'The uploaded file is not an image'
-      });
-
-    }
-
-    else if (image.dataUrl.length > 8000000) {
-      
-      this.alertSrv.toast({
-        icon: 'error',
-        message: 'The uploaded image must have a maximum of 8 MB'
-      });
-
-    }
-
-    else {
-
       this.loadingSrv.show();
 
-      const data: any = {
-        image: image.dataUrl,
-        bags: this.option ? this.bags : null,
-        note: this.note
-      } 
+      const formData = new FormData();
 
-      this.apiSrv.arriveStop(data)
-        .pipe(takeUntil(this.unsubscribe))
-        .subscribe(res => {
+      formData.append('image', UtilsHelper.base64toBlob(this.image));
 
-          this.loadingSrv.hide();
+      if (this.bags) {
+        formData.append('bags', String(this.bags));
+      }
 
-          if (res.success) {
+      if (this.note) {
+        formData.append('note', String(this.note));
+      }
 
-            if (res.data.status == 4) {
+      if (this.data.status == 3) {
 
-              const route = res.data.routes[res.data.routes.length - 1];
+        this.apiSrv.changeStatus(this.data.id, formData)
+          .pipe(takeUntil(this.unsubscribe))
+          .subscribe(res => {
 
-              this.alertSrv.sms({
-                icon: 'success',
-                title: res.message,
-                message: `Send delivery confirmation sms to ${route.end_name}`,
-                body: `Woohoo! Your Shef delivery was completed today at ${route.arrived_at.slice(11, 16)}${route.arrived_at.slice(19)}`,
-                phone: route.end_phone,
-                onConfirm: () => {
+            this.loadingSrv.hide();
 
-                  this.alertSrv.show({
-                    icon: 'success',
-                    message: 'All stops on this project have been completed.',
-                    confirmButtonText: 'Go to Routes',
-                    showCancelButton: false,
-                    onConfirm: () => {
-                      this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
-                    }
-                  });
+            if (res.success) {
 
-                },
-                onCancel: () => {
+              if (res.data.status == 4) {
 
-                  this.alertSrv.show({
-                    icon: 'success',
-                    message: 'All stops on this project have been completed.',
-                    confirmButtonText: 'Go to Routes',
-                    showCancelButton: false,
-                    onConfirm: () => {
-                      this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
-                    }
-                  });
+                const route = res.data.routes[res.data.routes.length - 1];
+                const date = new Date(route.arrived_at);
+                var arrived_at = date.toLocaleTimeString(navigator.language, {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                });
 
-                }
-              });
+                arrived_at = this.tConvert(arrived_at);
 
-              this.modalCtrl.dismiss(true);
-  
-            }
+                this.alertSrv.sms({
+                  icon: 'success',
+                  title: res.message,
+                  message: `Send delivery confirmation sms to ${route.end_name}`,
+                  body: `Woohoo! Your Shef delivery was completed today at ${arrived_at}`,
+                  phone: route.end_phone,
+                  onConfirm: () => {
 
-            else {
+                    this.alertSrv.show({
+                      icon: 'success',
+                      message: 'All stops on this project have been completed.',
+                      confirmButtonText: 'Go to Routes',
+                      showCancelButton: false,
+                      onConfirm: () => {
+                        this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
+                      }
+                    });
 
-              const length = res.data.routes.length;
+                  },
+                  onCancel: () => {
 
-              for (let index = length - 1; index >= 0; index--) {
+                    this.alertSrv.show({
+                      icon: 'success',
+                      message: 'All stops on this project have been completed.',
+                      confirmButtonText: 'Go to Routes',
+                      showCancelButton: false,
+                      onConfirm: () => {
+                        this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
+                      }
+                    });
 
-                const route = res.data.routes[index];
+                  }
+                });
 
-                if (route.status == 2) {
+                this.modalCtrl.dismiss(true);
 
-                  this.alertSrv.sms({
-                    icon: 'success',
-                    title: res.message,
-                    message: `Send delivery confirmation sms to ${route.end_name}`,
-                    body: `Woohoo! Your Shef delivery was completed today at ${route.arrived_at.slice(11, 16)}${route.arrived_at.slice(19)}`,
-                    phone: route.end_phone
-                  });
+              }
+              else {
 
-                  this.modalCtrl.dismiss(true);
+                const length = res.data.routes.length;
 
-                  break;
+                for (let index = length - 1; index >= 0; index--) {
+
+                  const route = res.data.routes[index];
+
+                  if (route.status == 2) {
+
+                    const date = new Date(route.arrived_at);
+                    var arrived_at = date.toLocaleTimeString(navigator.language, {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    });
+
+                    arrived_at = this.tConvert(arrived_at);
+
+                    this.alertSrv.sms({
+                      icon: 'success',
+                      title: res.message,
+                      message: `Send delivery confirmation sms to ${route.end_name}`,
+                      body: `Woohoo! Your Shef delivery was completed today at ${arrived_at}`,
+                      phone: route.end_phone
+                    });
+
+                    this.modalCtrl.dismiss(true);
+
+                    break;
+
+                  }
 
                 }
 
               }
-              
+
             }
 
-          }
+          }, err => {
 
-        });
+            this.loadingSrv.hide();
+
+            this.alertSrv.toast({
+              icon: 'error',
+              message: 'Slow connection! You need a good connection to complete this stop.',
+              duration: 5000
+            });
+
+          });
+
+      }
+
+      else {
+
+        this.apiSrv.arriveStop(formData)
+          .pipe(takeUntil(this.unsubscribe))
+          .subscribe(res => {
+
+            this.loadingSrv.hide();
+
+            if (res.success) {
+
+              if (res.data.status == 4) {
+
+                const route = res.data.routes[res.data.routes.length - 1];
+                const date = new Date(route.arrived_at);
+                var arrived_at = date.toLocaleTimeString(navigator.language, {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                });
+
+                arrived_at = this.tConvert(arrived_at);
+
+                this.alertSrv.sms({
+                  icon: 'success',
+                  title: res.message,
+                  message: `Send delivery confirmation sms to ${route.end_name}`,
+                  body: `Woohoo! Your Shef delivery was completed today at ${arrived_at}`,
+                  phone: route.end_phone,
+                  onConfirm: () => {
+
+                    this.alertSrv.show({
+                      icon: 'success',
+                      message: 'All stops on this project have been completed.',
+                      confirmButtonText: 'Go to Routes',
+                      showCancelButton: false,
+                      onConfirm: () => {
+                        this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
+                      }
+                    });
+
+                  },
+                  onCancel: () => {
+
+                    this.alertSrv.show({
+                      icon: 'success',
+                      message: 'All stops on this project have been completed.',
+                      confirmButtonText: 'Go to Routes',
+                      showCancelButton: false,
+                      onConfirm: () => {
+                        this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
+                      }
+                    });
+
+                  }
+                });
+
+                this.modalCtrl.dismiss(true);
+
+              }
+
+              else {
+
+                const length = res.data.routes.length;
+
+                for (let index = length - 1; index >= 0; index--) {
+
+                  const route = res.data.routes[index];
+
+                  if (route.status == 2) {
+
+                    const date = new Date(route.arrived_at);
+
+                    var arrived_at = date.toLocaleTimeString(navigator.language, {
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    });
+
+                    arrived_at = this.tConvert(arrived_at);
+
+                    this.alertSrv.sms({
+                      icon: 'success',
+                      title: res.message,
+                      message: `Send delivery confirmation sms to ${route.end_name}`,
+                      body: `Woohoo! Your Shef delivery was completed today at ${arrived_at}`,
+                      phone: route.end_phone
+                    });
+
+                    this.modalCtrl.dismiss(true);
+
+                    break;
+
+                  }
+
+                }
+
+              }
+
+            }
+
+          }, err => {
+
+            this.loadingSrv.hide();
+
+            this.alertSrv.toast({
+              icon: 'error',
+              message: 'Slow connection! You need a good connection to complete this stop.',
+              duration: 5000
+            });
+
+          });
+
+      }
 
     }
 
+  }
+
+  private tConvert(time: any) {
+    var timeAr = time.split(":");
+    time = timeAr[0] + ":" + timeAr[1];
+    // Check correct time format and split into components
+    time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+    if (time.length > 1) // If time format correct
+    {
+      time = time.slice(1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+
+    return time.join(''); // return adjusted time or original string
   }
 
 }

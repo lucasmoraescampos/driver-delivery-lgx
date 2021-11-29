@@ -53,6 +53,10 @@ export class SkipStopComponent implements OnInit, OnDestroy {
     }
   }
 
+  public moreInfo() {
+    this.data.moreInfo();
+  }
+
   public skip() {
 
     if (!this.note) {

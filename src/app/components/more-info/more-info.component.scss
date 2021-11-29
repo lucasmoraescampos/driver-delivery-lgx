@@ -2,6 +2,14 @@ ion-content {
     --background: #FFFFFF;
 }
 
+ion-button.phone {
+    --border-width: 1px;
+
+    ion-icon {
+        font-size: 14px;
+    }
+}
+
 ion-img-viewer {
     border-radius: 3px;
     margin-left: auto;
@@ -13,4 +21,15 @@ ion-img-viewer {
     &:hover {
         transform: scale(1.05);
     }
+}
+
+ion-thumbnail {
+    --size: 128px;
+    --border-radius: 3px;
+    margin-left: auto;
+}
+
+ion-button ion-badge {
+    margin-left: 8px;
+    font-weight: 400;
 }

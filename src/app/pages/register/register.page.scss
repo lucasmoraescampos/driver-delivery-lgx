@@ -1,0 +1,71 @@
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+
+    .part1 {
+        display: none;
+        background-image: url(../../../assets/image/bg_login.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .part2 {
+        height: calc(100% - 60px);
+
+        .header {
+            padding: 16px;
+            text-align: center;
+        }
+
+        .ion-scroll {
+            height: calc(100% - 82px);
+            padding: 0;
+        }
+        
+        .footer {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            padding: 16px;
+
+            ion-button {
+                --border-radius: 2px;
+                width: 100%;
+            }
+        }
+    }
+}
+
+ion-input {
+    --background: var(--ion-color-light);
+    --padding-start: 16px !important;
+    --padding-end: 16px !important;
+    border-radius: 2px;
+    border: none;
+}
+
+@media (min-width: 768px) {
+    .container {
+        .part1 {
+            display: block;
+            width: 60%;
+        }
+
+        .part2 {
+            width: 40%;
+
+            .ion-scroll {
+                display: flex;
+                align-items: center;
+                padding: 0 16px;
+                height: calc(100% - 100px);
+            }
+
+            .footer {
+                width: 40%;
+                padding: 16px 32px 32px;
+            }
+        }
+    }
+}
