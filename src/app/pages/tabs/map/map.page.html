@@ -19,9 +19,9 @@
 
                         <ion-label>Driver {{ project?.driver.name }}</ion-label>
 
-                        <ion-badge class="time" slot="end" mode="ios" color="medium" *ngIf="project?.status == 0">{{ project?.driver.time }}</ion-badge>
+                        <ion-badge class="time" slot="end" mode="ios" color="medium" *ngIf="project?.routes[0].status == 0">{{ project?.driver.time }}</ion-badge>
 
-                        <ion-badge class="time" slot="end" mode="ios" color="success" *ngIf="project?.status == 1">Started</ion-badge>
+                        <ion-badge class="time" slot="end" mode="ios" color="success" *ngIf="project?.routes[0].status > 0">Started</ion-badge>
 
                     </ion-item>
 
@@ -48,7 +48,7 @@
                                 </ion-button>
 
                                 <ion-button size="small" fill="outline" mode="ios" color="medium" (click)="directions()"
-                                    *ngIf="project?.status == 0">
+                                    *ngIf="project?.routes[0].status != 2">
 
                                     <ion-icon slot="start" name="navigate-circle-outline"></ion-icon> Directions
 
@@ -58,7 +58,7 @@
 
                         </ion-row>
 
-                        <ion-row *ngIf="project?.status == 0">
+                        <ion-row *ngIf="project?.routes[0].status == 0">
 
                             <ion-col class="ion-text-end" size="12">
 
