@@ -88,6 +88,7 @@ export class MoreInfoComponent implements OnInit {
       .then(res => {
         if (res.data) {
           this.data.status = 2;
+          setTimeout(() => this.modalCtrl.dismiss());
         }
       });
 

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Plugins } from '@capacitor/core';
 import { ModalController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -10,6 +11,8 @@ import { AlertService } from 'src/app/services/alert.service';
 import { ApiService } from 'src/app/services/api.service';
 import { LoadingService } from 'src/app/services/loading.service';
 import { TabsService } from 'src/app/services/tabs.service';
+
+const { Geolocation } = Plugins;
 
 @Component({
   selector: 'app-stops',
@@ -67,17 +70,17 @@ export class StopsPage implements OnInit, OnDestroy {
       component: MoreInfoComponent,
       componentProps: {
         data: {
-          id:       index !== undefined ? this.project.routes[index].end_id       : this.project.driver.id,
-          name:     index !== undefined ? this.project.routes[index].end_name     : this.project.driver.name,
-          time:     index !== undefined ? this.project.routes[index].time         : this.project.driver.time,
-          address:  index !== undefined ? this.project.routes[index].end_address  : this.project.routes[0].start_address,
-          phone:    index !== undefined ? this.project.routes[index].end_phone    : null,
-          image:    index !== undefined ? this.project.routes[index].image        : null,
-          note:     index !== undefined ? this.project.routes[index].note         : null,
-          bags:     index !== undefined ? this.project.routes[index].bags         : null,
-          status:   index !== undefined ? this.project.routes[index].status       : null,
+          id: index !== undefined ? this.project.routes[index].end_id : this.project.driver.id,
+          name: index !== undefined ? this.project.routes[index].end_name : this.project.driver.name,
+          time: index !== undefined ? this.project.routes[index].time : this.project.driver.time,
+          address: index !== undefined ? this.project.routes[index].end_address : this.project.routes[0].start_address,
+          phone: index !== undefined ? this.project.routes[index].end_phone : null,
+          image: index !== undefined ? this.project.routes[index].image : null,
+          note: index !== undefined ? this.project.routes[index].note : null,
+          bags: index !== undefined ? this.project.routes[index].bags : null,
+          status: index !== undefined ? this.project.routes[index].status : null,
           order_id: index !== undefined ? this.project.routes[index].end_order_id : null,
-          type:     index !== undefined ? 'stop' : 'driver'
+          type: index !== undefined ? 'stop' : 'driver'
         }
       }
     });
@@ -92,19 +95,21 @@ export class StopsPage implements OnInit, OnDestroy {
 
     this.apiSrv.startStop()
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe( res => {
+      .subscribe(res => {
 
         this.loadingSrv.hide();
 
-        if (res.success)
-        {
-          for (let i = 0; i < this.project.routes.length; i++)
-          {
-            if (this.project.routes[i].status == 1)
-            {
+        if (res.success) {
+
+          for (let i = 0; i < this.project.routes.length; i++) {
+
+            if (this.project.routes[i].status == 1) {
+
               const route = this.project.routes[i];
-              const time  = Math.round(route.duration / 60);
-              const word  = time > 1 ? 'minutes' : 'minute';
+
+              const time = Math.round(route.duration / 60);
+
+              const word = time > 1 ? 'minutes' : 'minute';
 
               this.alertSrv.sms({
                 icon: 'success',
@@ -116,11 +121,11 @@ export class StopsPage implements OnInit, OnDestroy {
 
               break;
 
-            } // if (this.project.routes[i].status == 1)
+            }
 
-          } // for (let i = 0; i < this.project.routes.length; i++)
+          }
 
-        } // if (res.success)
+        }
 
       });
 
@@ -190,7 +195,7 @@ export class StopsPage implements OnInit, OnDestroy {
       });
 
       duration += route.downtime;
-      
+
     });
 
   }

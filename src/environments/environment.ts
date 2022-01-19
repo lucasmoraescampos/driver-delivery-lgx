@@ -4,8 +4,7 @@
 
 export const environment = {
   production: false,
-  // apiUrl: 'http://fariaslgx.test',
-  apiUrl: 'https://api.fariaslgx.com',
+  apiUrl: 'http://api.fariaslgx.localhost',
 };
 
 /*
