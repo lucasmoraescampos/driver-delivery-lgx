@@ -143,11 +143,16 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                 arrived_at = this.tConvert(arrived_at);
 
+                var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`;
+
+                if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
+                  body += ` , https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+
                 this.alertSrv.sms({
                   icon: 'success',
                   title: res.message,
                   message: `Send delivery confirmation sms to ${route.end_name}`,
-                  body: `Woohoo! Your Shef delivery was completed today at ${arrived_at}`,
+                  body: body,
                   phone: route.end_phone,
                   onConfirm: () => {
 
@@ -198,11 +203,16 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                     arrived_at = this.tConvert(arrived_at);
 
+                    var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`;
+
+                    if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
+                      body += ` , https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+
                     this.alertSrv.sms({
                       icon: 'success',
                       title: res.message,
                       message: `Send delivery confirmation sms to ${route.end_name}`,
-                      body: `Woohoo! Your Shef delivery was completed today at ${arrived_at}`,
+                      body: body,
                       phone: route.end_phone
                     });
 
@@ -253,11 +263,16 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                 arrived_at = this.tConvert(arrived_at);
 
+                var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`;
+
+                if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
+                  body += ` , https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+
                 this.alertSrv.sms({
                   icon: 'success',
                   title: res.message,
                   message: `Send delivery confirmation sms to ${route.end_name}`,
-                  body: `Woohoo! Your Shef delivery was completed today at ${arrived_at}`,
+                  body: body,
                   phone: route.end_phone,
                   onConfirm: () => {
 
@@ -310,11 +325,16 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                     arrived_at = this.tConvert(arrived_at);
 
+                    var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`
+
+                    if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
+                      body += ` , https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+
                     this.alertSrv.sms({
                       icon: 'success',
                       title: res.message,
                       message: `Send delivery confirmation sms to ${route.end_name}`,
-                      body: `Woohoo! Your Shef delivery was completed today at ${arrived_at}`,
+                      body: body,
                       phone: route.end_phone
                     });
 
