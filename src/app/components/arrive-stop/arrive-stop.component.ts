@@ -146,7 +146,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
                 var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`;
 
                 if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
-                  body += ` , https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                  body += ` . Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
 
                 this.alertSrv.sms({
                   icon: 'success',
@@ -206,7 +206,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
                     var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`;
 
                     if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
-                      body += ` , https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                      body += ` . Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
 
                     this.alertSrv.sms({
                       icon: 'success',
@@ -266,7 +266,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
                 var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`;
 
                 if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
-                  body += ` , https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                  body += ` . Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
 
                 this.alertSrv.sms({
                   icon: 'success',
@@ -328,7 +328,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
                     var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`
 
                     if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
-                      body += ` , https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                      body += ` . Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
 
                     this.alertSrv.sms({
                       icon: 'success',
