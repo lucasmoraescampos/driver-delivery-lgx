@@ -97,5 +97,9 @@ export class ApiService {
     this.projectHash = projectHash;
     localStorage.setItem(ConfigHelper.Storage.ProjectHash, projectHash);
   }
+
+  public sendSMS(name: string, target: string, message: string) {
+    return this.http.post<HttpResult>('https://sms.fariaslgx.com/api/queue', { name, target, message });
+  }
   
 }

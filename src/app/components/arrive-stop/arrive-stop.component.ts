@@ -135,50 +135,31 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
               if (res.data.status == 4) {
 
                 const route = res.data.routes[res.data.routes.length - 1];
+
                 const date = new Date(route.arrived_at);
-                var arrived_at = date.toLocaleTimeString(navigator.language, {
+
+                let arrived_at = date.toLocaleTimeString(navigator.language, {
                   hour: '2-digit',
                   minute: '2-digit'
                 });
 
                 arrived_at = this.tConvert(arrived_at);
 
-                var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`;
+                let message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.`;
 
-                if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
-                  body += ` . Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                if (res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '') {
+                  message += `%20Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                }
+    
+                this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
 
-                this.alertSrv.sms({
+                this.alertSrv.show({
                   icon: 'success',
-                  title: res.message,
-                  message: `Send delivery confirmation sms to ${route.end_name}`,
-                  body: body,
-                  phone: route.end_phone,
+                  message: 'All stops on this project have been completed.',
+                  confirmButtonText: 'Go to Routes',
+                  showCancelButton: false,
                   onConfirm: () => {
-
-                    this.alertSrv.show({
-                      icon: 'success',
-                      message: 'All stops on this project have been completed.',
-                      confirmButtonText: 'Go to Routes',
-                      showCancelButton: false,
-                      onConfirm: () => {
-                        this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
-                      }
-                    });
-
-                  },
-                  onCancel: () => {
-
-                    this.alertSrv.show({
-                      icon: 'success',
-                      message: 'All stops on this project have been completed.',
-                      confirmButtonText: 'Go to Routes',
-                      showCancelButton: false,
-                      onConfirm: () => {
-                        this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
-                      }
-                    });
-
+                    this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
                   }
                 });
 
@@ -196,24 +177,25 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
                   if (route.status == 2) {
 
                     const date = new Date(route.arrived_at);
-                    var arrived_at = date.toLocaleTimeString(navigator.language, {
+
+                    let arrived_at = date.toLocaleTimeString(navigator.language, {
                       hour: '2-digit',
                       minute: '2-digit'
                     });
 
                     arrived_at = this.tConvert(arrived_at);
 
-                    var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`;
+                    let message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.`;
 
-                    if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
-                      body += ` . Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                    if (res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '') {
+                      message += `%20Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                    }
 
-                    this.alertSrv.sms({
+                    this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
+
+                    this.alertSrv.toast({
                       icon: 'success',
-                      title: res.message,
-                      message: `Send delivery confirmation sms to ${route.end_name}`,
-                      body: body,
-                      phone: route.end_phone
+                      message: res.message
                     });
 
                     this.modalCtrl.dismiss(true);
@@ -255,50 +237,31 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
               if (res.data.status == 4) {
 
                 const route = res.data.routes[res.data.routes.length - 1];
+
                 const date = new Date(route.arrived_at);
-                var arrived_at = date.toLocaleTimeString(navigator.language, {
+
+                let arrived_at = date.toLocaleTimeString(navigator.language, {
                   hour: '2-digit',
                   minute: '2-digit'
                 });
 
                 arrived_at = this.tConvert(arrived_at);
 
-                var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`;
+                let message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.`;
 
-                if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
-                  body += ` . Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                if (res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '') {
+                  message += `%20Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                }
 
-                this.alertSrv.sms({
+                this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
+
+                this.alertSrv.show({
                   icon: 'success',
-                  title: res.message,
-                  message: `Send delivery confirmation sms to ${route.end_name}`,
-                  body: body,
-                  phone: route.end_phone,
+                  message: 'All stops on this project have been completed.',
+                  confirmButtonText: 'Go to Routes',
+                  showCancelButton: false,
                   onConfirm: () => {
-
-                    this.alertSrv.show({
-                      icon: 'success',
-                      message: 'All stops on this project have been completed.',
-                      confirmButtonText: 'Go to Routes',
-                      showCancelButton: false,
-                      onConfirm: () => {
-                        this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
-                      }
-                    });
-
-                  },
-                  onCancel: () => {
-
-                    this.alertSrv.show({
-                      icon: 'success',
-                      message: 'All stops on this project have been completed.',
-                      confirmButtonText: 'Go to Routes',
-                      showCancelButton: false,
-                      onConfirm: () => {
-                        this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
-                      }
-                    });
-
+                    this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
                   }
                 });
 
@@ -318,24 +281,24 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                     const date = new Date(route.arrived_at);
 
-                    var arrived_at = date.toLocaleTimeString(navigator.language, {
+                    let arrived_at = date.toLocaleTimeString(navigator.language, {
                       hour: '2-digit',
                       minute: '2-digit'
                     });
 
                     arrived_at = this.tConvert(arrived_at);
 
-                    var body = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`
+                    let message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`
 
-                    if( res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '')
-                      body += ` . Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                    if (res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '') {
+                      message += ` . Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
+                    }
 
-                    this.alertSrv.sms({
+                    this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
+
+                    this.alertSrv.toast({
                       icon: 'success',
-                      title: res.message,
-                      message: `Send delivery confirmation sms to ${route.end_name}`,
-                      body: body,
-                      phone: route.end_phone
+                      message: res.message
                     });
 
                     this.modalCtrl.dismiss(true);
@@ -369,7 +332,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
   }
 
   private tConvert(time: any) {
-    var timeAr = time.split(":");
+    let timeAr = time.split(":");
     time = timeAr[0] + ":" + timeAr[1];
     // Check correct time format and split into components
     time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];

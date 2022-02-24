@@ -240,12 +240,13 @@ export class MapPage implements OnInit, OnDestroy {
 
               const word = time > 1 ? 'minutes' : 'minute';
 
-              this.alertSrv.sms({
+              const message = `Hi there! Your Shef delivery is on the way and will arrive in approximately ${time} ${word}!`;
+
+              this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
+
+              this.alertSrv.toast({
                 icon: 'success',
-                title: res.message,
-                message: `Send an sms to ${route.end_name} to let him know that your delivery is on its way`,
-                body: `Hi there! Your Shef delivery is on the way and will arrive in approximately ${time} ${word}!`,
-                phone: route.end_phone
+                message: res.message
               });
 
               if (route.end_id == this.project.routes[0].end_id) {

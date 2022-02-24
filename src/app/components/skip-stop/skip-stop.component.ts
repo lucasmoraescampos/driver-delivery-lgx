@@ -84,37 +84,17 @@ export class SkipStopComponent implements OnInit, OnDestroy {
 
               const route = res.data.routes[res.data.routes.length - 1];
 
-              this.alertSrv.sms({
+              const message = `Sorry, your delivery was not completed today.%0A%0APlease contact our team to reschedule.`;
+
+              this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
+
+              this.alertSrv.show({
                 icon: 'success',
-                title: res.message,
-                message: `Send SMS informing ${route.end_name} that his delivery was not completed`,
-                body: `Sorry, your delivery was not completed today.%0A%0APlease contact our team to reschedule.`,
-                phone: route.end_phone,
+                message: 'All stops on this project have been completed.',
+                confirmButtonText: 'Go to Routes',
+                showCancelButton: false,
                 onConfirm: () => {
-
-                  this.alertSrv.show({
-                    icon: 'success',
-                    message: 'All stops on this project have been completed.',
-                    confirmButtonText: 'Go to Routes',
-                    showCancelButton: false,
-                    onConfirm: () => {
-                      this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
-                    }
-                  });
-
-                },
-                onCancel: () => {
-
-                  this.alertSrv.show({
-                    icon: 'success',
-                    message: 'All stops on this project have been completed.',
-                    confirmButtonText: 'Go to Routes',
-                    showCancelButton: false,
-                    onConfirm: () => {
-                      this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
-                    }
-                  });
-
+                  this.navCtrl.navigateForward(`/${localStorage.getItem(ConfigHelper.Storage.DriverHash)}/routes`);
                 }
               });
 
@@ -132,13 +112,14 @@ export class SkipStopComponent implements OnInit, OnDestroy {
 
                 if (route.status == 3) {
 
-                  this.alertSrv.sms({
+                  const message = `Sorry, your delivery was not completed today.%0A%0APlease contact our team to reschedule.`;
+
+                  this.alertSrv.toast({
                     icon: 'success',
-                    title: res.message,
-                    message: `Send SMS informing ${route.end_name} that his delivery was not completed`,
-                    body: `Sorry, your delivery was not completed today.%0A%0APlease contact our team to reschedule.`,
-                    phone: route.end_phone
+                    message: res.message
                   });
+
+                  this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
 
                   this.modalCtrl.dismiss(true);
 

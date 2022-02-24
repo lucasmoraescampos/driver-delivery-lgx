@@ -111,64 +111,6 @@ export class AlertService {
     
   }
 
-  public sms(options: AlertOptions) {
-
-    let html = document.createElement('div');
-
-    if (options.message) {
-
-      const p = document.createElement('p');
-
-      p.style.marginTop = '0';
-
-      p.innerText = options.message;
-
-      html.appendChild(p);
-
-    }
-
-    const el = document.createElement('ion-button');
-
-    el.style.marginTop = '10px';
-    
-    el.setAttribute('mode', 'ios');
-
-    el.setAttribute('href', `sms:${options.phone};?&body=${options.body}`);
-
-    el.setAttribute('expand', 'block');
-
-    el.setAttribute('color', 'success');
-
-    el.innerHTML = '<ion-icon slot="start" name="mail-outline"></ion-icon> Send SMS';
-
-    el.onclick = () => {
-      Swal.close();
-      if (options.onConfirm) {
-        options.onConfirm();
-      }
-    }
-    
-    html.appendChild(el);
-
-    Swal.fire({
-      icon: options.icon,
-      imageWidth: 60,
-      title: options.title,
-      html: html,
-      showConfirmButton: false,
-      showCancelButton: false,
-      cancelButtonText: 'Do not send',
-      heightAuto: false,
-      allowOutsideClick: false,
-      customClass: this.customClass
-    }).then(result => {
-      if (options.onCancel) {
-        options.onCancel();
-      }
-    });
-    
-  }
-
 }
 
 interface AlertOptions {
