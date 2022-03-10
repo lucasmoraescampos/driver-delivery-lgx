@@ -84,7 +84,7 @@ export class SkipStopComponent implements OnInit, OnDestroy {
 
               const route = res.data.routes[res.data.routes.length - 1];
 
-              const message = `Sorry, your delivery was not completed today.%0A%0APlease contact our team to reschedule.`;
+              const message = `Sorry, your delivery was not completed today.\n\nPlease contact our team to reschedule.`;
 
               this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
 
@@ -112,7 +112,7 @@ export class SkipStopComponent implements OnInit, OnDestroy {
 
                 if (route.status == 3) {
 
-                  const message = `Sorry, your delivery was not completed today.%0A%0APlease contact our team to reschedule.`;
+                  const message = `Sorry, your delivery was not completed today.\n\nPlease contact our team to reschedule.`;
 
                   this.alertSrv.toast({
                     icon: 'success',

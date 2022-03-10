@@ -9,6 +9,7 @@ import { Subject } from 'rxjs';
 import { ConfigHelper } from 'src/app/helpers/config.helper';
 import { UtilsHelper } from 'src/app/helpers/utils.helper';
 import { NgxImageCompressService } from 'ngx-image-compress';
+import { environment } from 'src/environments/environment';
 
 const { Camera, Device } = Plugins;
 
@@ -145,12 +146,8 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                 arrived_at = this.tConvert(arrived_at);
 
-                let message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.`;
+                const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.\n\nUse the following link to see where your order was delivered: ${environment.appUrl}/where-is-my-order/${res.data.driver.order_id}/${res.data.driver.phone}`;
 
-                if (res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '') {
-                  message += `%20Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
-                }
-    
                 this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
 
                 this.alertSrv.show({
@@ -166,6 +163,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
                 this.modalCtrl.dismiss(true);
 
               }
+
               else {
 
                 const length = res.data.routes.length;
@@ -185,11 +183,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                     arrived_at = this.tConvert(arrived_at);
 
-                    let message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.`;
-
-                    if (res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '') {
-                      message += `%20Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
-                    }
+                    const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.\n\nUse the following link to see where your order was delivered: ${environment.appUrl}/where-is-my-order/${res.data.driver.order_id}/${res.data.driver.phone}`;
 
                     this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
 
@@ -209,16 +203,6 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
               }
 
             }
-
-          }, err => {
-
-            this.loadingSrv.hide();
-
-            this.alertSrv.toast({
-              icon: 'error',
-              message: 'Slow connection! You need a good connection to complete this stop.',
-              duration: 5000
-            });
 
           });
 
@@ -247,11 +231,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                 arrived_at = this.tConvert(arrived_at);
 
-                let message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.`;
-
-                if (res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '') {
-                  message += `%20Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
-                }
+                const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.\n\nUse the following link to see where your order was delivered: ${environment.appUrl}/where-is-my-order/${res.data.driver.order_id}/${res.data.driver.phone}`;
 
                 this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
 
@@ -288,11 +268,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                     arrived_at = this.tConvert(arrived_at);
 
-                    let message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}`
-
-                    if (res?.data?.driver?.phone != '' && res?.data?.driver?.order_id != '') {
-                      message += ` . Use the following link to see where your order was delivered: https://app.fariaslgx.com/where-is-my-order/${res?.data?.driver?.order_id}/${res?.data?.driver?.phone}`;
-                    }
+                    const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.\n\nUse the following link to see where your order was delivered: ${environment.appUrl}/where-is-my-order/${res.data.driver.order_id}/${res.data.driver.phone}`;
 
                     this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
 
