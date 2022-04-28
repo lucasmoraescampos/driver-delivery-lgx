@@ -1,7 +1,7 @@
 .balance {
-    background: var(--ion-color-primary);  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #FDCF93, var(--ion-color-primary));  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to left, #FDCF93, var(--ion-color-primary)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: var(--ion-color-primary); /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #fdc680, var(--ion-color-primary-shade)); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #fdc680, var(--ion-color-primary-shade));
 
     ion-card-title {
         color: #fff;

@@ -15,6 +15,10 @@ const routes: Routes = [
     loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
   {
+    path: 'terms-and-privacy-policy',
+    loadChildren: () => import('./pages/terms-and-privacy-policy/terms-and-privacy-policy.module').then( m => m.TermsAndPrivacyPolicyPageModule)
+  },
+  {
     path: 'dashboard',
     loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardPageModule)
   },

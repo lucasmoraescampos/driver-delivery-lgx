@@ -1,46 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UtilsHelper } from 'src/app/helpers/utils.helper';
 import { AlertService } from 'src/app/services/alert.service';
 import { ApiService } from 'src/app/services/api.service';
-import { LoadingService } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
 })
-export class RegisterPage implements OnInit {
+export class RegisterPage implements OnInit, OnDestroy {
 
   public formGroup: FormGroup;
 
-  private unsubscribe = new Subject();
+  public eye: boolean;
+
+  public loading: boolean;
+
+  private unsubscribe$ = new Subject();
 
   constructor(
+    private apiSrv: ApiService,
     private formBuilder: FormBuilder,
     private alertSrv: AlertService,
-    private loadingSrv: LoadingService,
-    public router: Router
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() {
-    // Init all plugins...
-    const current = this;
 
     this.formGroup = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', Validators.required],
+      phone: ['', Validators.required],
       password: ['', Validators.required]
     });
+
   }
 
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   public get formControl() {
@@ -48,6 +50,8 @@ export class RegisterPage implements OnInit {
   }
 
   public save() {
+
+    if (this.loading) return;
 
     if (this.formGroup.valid) {
 
@@ -60,9 +64,31 @@ export class RegisterPage implements OnInit {
 
       }
 
+      else if (isNaN(this.formControl.phone.value)) {
+
+        this.alertSrv.toast({
+          icon: 'error',
+          message: 'Enter a valid phone number'
+        });
+
+      }
+
       else {
 
-        this.loadingSrv.show();
+        this.loading = true;
+
+        const data = { ...this.formGroup.value };
+
+        data.phone = `1${data.phone}`;
+
+        this.apiSrv.register(data)
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe(() => {
+            this.loading = false;
+            this.navCtrl.navigateRoot('/dashboard');
+          }, () => {
+            this.loading = false;
+          });
 
       }
 

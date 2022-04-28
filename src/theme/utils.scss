@@ -76,6 +76,11 @@ textarea {
     bottom: 0;
 }
 
+.send-documents-modal {
+    --min-width: calc(100vw - 100px);
+    --min-height: calc(100vh - 100px);
+}
+
 @media (min-width: 576px) {
     .choose-map .modal-wrapper {
         width: 300px;

@@ -34,9 +34,6 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
   private unsubscribe = new Subject();
 
-  imgResultBeforeCompress:string;
-  imgResultAfterCompress:string;
-
   constructor(
     private modalCtrl: ModalController,
     private alertSrv: AlertService,
@@ -146,9 +143,17 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                 arrived_at = this.tConvert(arrived_at);
 
-                const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.\n\nUse the following link to see where your order was delivered: ${environment.appUrl}/where-is-my-order/${res.data.driver.order_id}/${res.data.driver.phone}`;
+                const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}. See where your order was delivered: ${environment.appUrl}/wimo/${res.data.driver.order_id}/${res.data.driver.phone}`;
 
-                this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
+                this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message)
+                  .toPromise()
+                  .then(() => {
+
+                    const message = `Rate and Tip your delivery hero with the following link: ${environment.appUrl}/tips/${res.data.driver.order_id}/${res.data.driver.phone}`;
+
+                    this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
+
+                  });
 
                 this.alertSrv.show({
                   icon: 'success',
@@ -183,9 +188,17 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                     arrived_at = this.tConvert(arrived_at);
 
-                    const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.\n\nUse the following link to see where your order was delivered: ${environment.appUrl}/where-is-my-order/${res.data.driver.order_id}/${res.data.driver.phone}`;
+                    const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}. See where your order was delivered: ${environment.appUrl}/wimo/${res.data.driver.order_id}/${res.data.driver.phone}`;
 
-                    this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
+                    this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message)
+                      .toPromise()
+                      .then(() => {
+
+                        const message = `Rate and Tip your delivery hero with the following link: ${environment.appUrl}/tips/${res.data.driver.order_id}/${res.data.driver.phone}`;
+    
+                        this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
+    
+                      });
 
                     this.alertSrv.toast({
                       icon: 'success',
@@ -231,9 +244,17 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                 arrived_at = this.tConvert(arrived_at);
 
-                const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.\n\nUse the following link to see where your order was delivered: ${environment.appUrl}/where-is-my-order/${res.data.driver.order_id}/${res.data.driver.phone}`;
+                const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}. See where your order was delivered: ${environment.appUrl}/wimo/${res.data.driver.order_id}/${res.data.driver.phone}`;
 
-                this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
+                this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message)
+                  .toPromise()
+                  .then(() => {
+
+                    const message = `Rate and Tip your delivery hero with the following link: ${environment.appUrl}/tips/${res.data.driver.order_id}/${res.data.driver.phone}`;
+
+                    this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
+
+                  });
 
                 this.alertSrv.show({
                   icon: 'success',
@@ -268,9 +289,17 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                     arrived_at = this.tConvert(arrived_at);
 
-                    const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}.\n\nUse the following link to see where your order was delivered: ${environment.appUrl}/where-is-my-order/${res.data.driver.order_id}/${res.data.driver.phone}`;
+                    const message = `Woohoo! Your Shef delivery was completed today at ${arrived_at}. See where your order was delivered: ${environment.appUrl}/wimo/${res.data.driver.order_id}/${res.data.driver.phone}`;
 
-                    this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
+                    this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message)
+                      .toPromise()
+                      .then(() => {
+
+                        const message = `Rate and Tip your delivery hero with the following link: ${environment.appUrl}/tips/${res.data.driver.order_id}/${res.data.driver.phone}`;
+    
+                        this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
+    
+                      });
 
                     this.alertSrv.toast({
                       icon: 'success',

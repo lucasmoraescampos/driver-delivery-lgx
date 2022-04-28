@@ -25,6 +25,45 @@ export class ApiService {
     private http: HttpClient
   ) { }
 
+  public login(data: any) {
+    return this.http.post<HttpResult>(`${this.apiUrl}/driver/login`, data)
+      .pipe(map(res => {
+        if (res.success) {
+          localStorage.setItem('access_token', res.data.token);
+          localStorage.setItem('driver', JSON.stringify(res.data.driver));
+        }
+        return res;
+      }));
+  }
+
+  public register(data: any) {
+    return this.http.post<HttpResult>(`${this.apiUrl}/driver/register`, data)
+      .pipe(map(res => {
+        if (res.success) {
+          localStorage.setItem('access_token', res.data.token);
+          localStorage.setItem('driver', JSON.stringify(res.data.driver));
+        }
+        return res;
+      }));
+  }
+
+  public update(data: any) {
+    if (data instanceof FormData) data.append('_method', 'put');
+    else data._method = 'put';
+    return this.http.post<HttpResult>(`${this.apiUrl}/driver/update`, data)
+      .pipe(map(res => {
+        if (res.success) {
+          localStorage.setItem('driver', JSON.stringify(res.data));
+        }
+        return res;
+      }));
+  }
+
+  public logout() {
+    const token = localStorage.getItem('access_token');
+    return this.http.post<HttpResult>(`${this.apiUrl}/user/logout`, { token });
+  }
+
   public getProjects() {    
     return this.http.get<HttpResult>(`${this.apiUrl}/driver/${this.driverHash}/projects`);
   }
@@ -98,8 +137,12 @@ export class ApiService {
     localStorage.setItem(ConfigHelper.Storage.ProjectHash, projectHash);
   }
 
-  public sendSMS(name: string, target: string, message: string) {
+  public sendSMSByFariasSMS(name: string, target: string, message: string) {
     return this.http.post<HttpResult>('https://sms.fariaslgx.com/api/queue', { name, target, message });
   }
   
+  public sendSMSByNexmoAPI(phone: string, message: string) {
+    return this.http.post<HttpResult>(`${this.apiUrl}/driver/send-sms`, { phone, message });
+  }
+
 }

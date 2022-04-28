@@ -242,7 +242,7 @@ export class MapPage implements OnInit, OnDestroy {
 
               const message = `Hi there! Your Shef delivery is on the way and will arrive in approximately ${time} ${word}!`;
 
-              this.apiSrv.sendSMS(route.start_name, route.end_phone, message).toPromise();
+              this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
 
               this.alertSrv.toast({
                 icon: 'success',

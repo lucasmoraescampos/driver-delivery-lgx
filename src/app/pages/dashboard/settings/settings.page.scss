@@ -1,14 +1,92 @@
-ion-card-title {
-    font-size: 1rem;
+ion-slides {
+    width: 100%;
+    height: 100%;
 }
 
-ion-item {
-    --background: transparent;
+ion-slide {
+    display: block;
+    text-align: left;
 }
 
-.terms-conditions {
-    max-height: 160px;
-    border: 0.55px solid var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.13))));
+ion-label p {
+    color: var(--ion-color-medium-tint);
+}
+
+ion-icon.animate__pulse {
+    color: var(--ion-color-primary);
+}
+
+ion-button.choose-image {
+    height: 100px;
+    color: var(--ion-color-medium-tint);
+    border: 1px dashed var(--ion-color-medium);
+    width: 100%;
     border-radius: 5px;
-    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 400;
+    text-transform: capitalize;
+    margin-top: 5px;
+
+    div {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+
+        ion-icon {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+    }
+}
+
+ion-thumbnail {
+    --border-radius: 5px;
+    --size: auto;
+    max-height: 300px;
+    padding: 5px;
+    margin: 5px 0 0;
+    border: 1px dashed var(--ion-color-medium);
+    cursor: pointer;
+    
+    img {
+        width: 100%;
+        max-height: 290px;
+        object-fit: contain;
+    }
+}
+
+.gradient-primary {
+    --background: var(--ion-color-primary); /* fallback for old browsers */
+    --background: -webkit-linear-gradient(
+        to left,
+        #fdc680,
+        var(--ion-color-primary-shade)
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    --background: linear-gradient(to left, #fdc680, var(--ion-color-primary-shade));
+    --color: #fff;
+
+    h2 {
+        font-weight: 600;
+    }
+
+    ion-icon,
+    p {
+        color: #fff;
+    }
+}
+
+.flag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.55px solid
+        var(--ion-item-border-color, var(--ion-border-color, var(--ion-color-step-150, rgba(0, 0, 0, 0.13))));
+    padding: 0 16px;
+    border-radius: 2px;
+    height: 100%;
+
+    img {
+        height: 14px;
+        margin-right: 5px;
+    }
 }

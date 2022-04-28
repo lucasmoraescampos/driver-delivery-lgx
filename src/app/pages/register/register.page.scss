@@ -11,6 +11,7 @@
     }
 
     .part2 {
+        width: 100%;
         height: calc(100% - 60px);
 
         .header {
@@ -22,18 +23,6 @@
             height: calc(100% - 82px);
             padding: 0;
         }
-        
-        .footer {
-            position: absolute;
-            width: 100%;
-            bottom: 0;
-            padding: 16px;
-
-            ion-button {
-                --border-radius: 2px;
-                width: 100%;
-            }
-        }
     }
 }
 
@@ -43,6 +32,44 @@ ion-input {
     --padding-end: 16px !important;
     border-radius: 2px;
     border: none;
+
+    &.password {
+        flex-direction: row-reverse;
+    }
+}
+
+.input-group {
+    display: flex;
+    
+    ion-input {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    ion-button {
+        --background: var(--ion-color-light);
+        --border-radius: 0 2px 2px 0;
+    }
+}
+
+.flag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--ion-color-light);
+    padding: 0 16px;
+    border-radius: 2px;
+    height: 100%;
+
+    img {
+        height: 14px;
+        margin-right: 5px;
+    }
+}
+
+ion-button b {
+    font-weight: 400;
+    color: var(--ion-color-primary);
 }
 
 @media (min-width: 768px) {
@@ -60,11 +87,6 @@ ion-input {
                 align-items: center;
                 padding: 0 16px;
                 height: calc(100% - 100px);
-            }
-
-            .footer {
-                width: 40%;
-                padding: 16px 32px 32px;
             }
         }
     }

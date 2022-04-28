@@ -2,46 +2,59 @@
 
   <div class="container">
 
-    <div class="part1"></div>
+    <div class="part1 animate__animated animate__fadeIn"></div>
 
     <div class="part2">
 
-      <div class="header">
+      <div class="header animate__animated animate__fadeInDown">
 
         <img src="../../../assets/image/logo-full.png" width="120px">
 
       </div>
 
-      <div class="ion-scroll">
+      <div class="ion-scroll animate__animated animate__fadeInRight">
 
-        <ion-grid>
-  
-          <ion-row>
-  
-            <ion-col size="12">
-  
-              <ion-input placeholder="Email"></ion-input>
-  
-            </ion-col>
-  
-            <ion-col size="12">
-  
-              <ion-input placeholder="Password"></ion-input>
-  
-            </ion-col>
+        <form [formGroup]="formGroup" (ngSubmit)="login()">
+
+          <ion-grid>
+    
+            <ion-row>
+    
+              <ion-col size="12">
+    
+                <ion-input type="email" inputmode="email" placeholder="Email or phone number" formControlName="user" (keyup.enter)="login()"></ion-input>
+    
+              </ion-col>
+    
+              <ion-col size="12">
+    
+                <ion-input type="password" placeholder="Password" formControlName="password" (keyup.enter)="login()"></ion-input>
+    
+              </ion-col>
               
-          </ion-row>
-          
-        </ion-grid>
+              <ion-col size="12">
+
+                <ion-button type="submit" expand="block" [disabled]="formGroup.invalid">
+                  <ion-spinner *ngIf="loading"></ion-spinner>
+                  <span *ngIf="!loading">Login</span>
+                </ion-button>
+
+              </ion-col>
+
+              <ion-col class="ion-text-center" size="12">
+
+                <ion-button fill="clear" [routerLink]="['/register']">Don't have an account? Signup</ion-button>
+
+              </ion-col>
+                
+            </ion-row>
+            
+          </ion-grid>
+
+        </form>
   
       </div>
-
-      <div class="footer">
-
-        <ion-button>Login</ion-button>
-
-      </div>
-
+      
     </div>
 
   </div>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
-import { AlertService } from 'src/app/services/alert.service';
+import { takeUntil } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -14,16 +14,13 @@ export class LoginPage implements OnInit {
 
   public loading: boolean;
 
-  public eye: boolean;
-
   public formGroup: FormGroup;
 
-  private unsubscribe = new Subject();
+  private unsubscribe$ = new Subject();
 
   constructor(
     private apiSrv: ApiService,
     private formBuilder: FormBuilder,
-    private alertSrv: AlertService,
     private navCtrl: NavController
   ) { }
 
@@ -37,12 +34,8 @@ export class LoginPage implements OnInit {
   }
 
   ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
-
-  public toggleEye() {
-    this.eye = !this.eye;
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   public login() {
@@ -53,14 +46,14 @@ export class LoginPage implements OnInit {
 
       this.loading = true;
 
-    }
-
-    else {
-
-      this.alertSrv.toast({
-        icon: 'error',
-        message: 'Preencha todos os campos'
-      });
+      this.apiSrv.login(this.formGroup.value)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(() => {
+          this.loading = false;
+          this.navCtrl.navigateRoot('/dashboard');
+        }, () => {
+          this.loading = false;
+        });
 
     }
     
