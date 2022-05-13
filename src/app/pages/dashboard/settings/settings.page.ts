@@ -165,7 +165,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(res => {
         this.loading = false;
-        this.driver = res.data;
+        this.driverSrv.setDriver(res.data);
         this.slides.slideTo(0);
         this.alertSrv.toast({
           icon: 'success',

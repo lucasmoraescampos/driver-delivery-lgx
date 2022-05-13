@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DriverService {
 
-  private driverSubject: BehaviorSubject<any>;
+  protected driverSubject: BehaviorSubject<any>;
 
   constructor() {
     this.driverSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('driver')));

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ConfigHelper } from '../helpers/config.helper';
@@ -30,7 +30,17 @@ export class ApiService {
       .pipe(map(res => {
         if (res.success) {
           localStorage.setItem('access_token', res.data.token);
-          localStorage.setItem('driver', JSON.stringify(res.data.driver));
+        }
+        return res;
+      }));
+  }
+
+  public logout() {
+    const token = localStorage.getItem('access_token');
+    return this.http.post<HttpResult>(`${this.apiUrl}/user/logout`, { token })
+      .pipe(map(res => {
+        if (res.success) {
+          localStorage.clear();
         }
         return res;
       }));
@@ -41,34 +51,26 @@ export class ApiService {
       .pipe(map(res => {
         if (res.success) {
           localStorage.setItem('access_token', res.data.token);
-          localStorage.setItem('driver', JSON.stringify(res.data.driver));
         }
         return res;
       }));
   }
 
   public update(data: any) {
-    if (data instanceof FormData) data.append('_method', 'put');
-    else data._method = 'put';
-    return this.http.post<HttpResult>(`${this.apiUrl}/driver/update`, data)
-      .pipe(map(res => {
-        if (res.success) {
-          localStorage.setItem('driver', JSON.stringify(res.data));
-        }
-        return res;
-      }));
-  }
-
-  public logout() {
-    const token = localStorage.getItem('access_token');
-    return this.http.post<HttpResult>(`${this.apiUrl}/user/logout`, { token });
+    if (data instanceof FormData) {
+      data.append('_method', 'put');
+    }
+    else {
+      data._method = 'put';
+    }
+    return this.http.post<HttpResult>(`${this.apiUrl}/driver/update`, data);
   }
 
   public getStatus() {
     return this.http.get<HttpResult>(`${this.apiUrl}/driver/status`);
   }
 
-  public getProjects() {    
+  public getProjects() {
     return this.http.get<HttpResult>(`${this.apiUrl}/driver/${this.driverHash}/projects`);
   }
 
@@ -91,7 +93,7 @@ export class ApiService {
   public arriveStop(data: FormData) {
 
     data.append('driver_hash', this.driverHash);
-    
+
     data.append('project_hash', this.projectHash);
 
     return this.http.post<HttpResult>(`${this.apiUrl}/driver/project/arrive`, data)
@@ -119,7 +121,7 @@ export class ApiService {
   public changeStatus(stop_id: number, data: FormData) {
 
     data.append('driver_hash', this.driverHash);
-    
+
     data.append('project_hash', this.projectHash);
 
     return this.http.post<HttpResult>(`${this.apiUrl}/driver/project/status/${stop_id}`, data)
@@ -135,7 +137,7 @@ export class ApiService {
     this.driverHash = driverHash;
     localStorage.setItem(ConfigHelper.Storage.DriverHash, driverHash);
   }
-  
+
   public setProjectHash(projectHash: string) {
     this.projectHash = projectHash;
     localStorage.setItem(ConfigHelper.Storage.ProjectHash, projectHash);
@@ -144,7 +146,7 @@ export class ApiService {
   public sendSMSByFariasSMS(name: string, target: string, message: string) {
     return this.http.post<HttpResult>('https://sms.fariaslgx.com/api/queue', { name, target, message });
   }
-  
+
   public sendSMSByNexmoAPI(phone: string, message: string) {
     return this.http.post<HttpResult>(`${this.apiUrl}/driver/send-sms`, { phone, message });
   }

@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { UtilsHelper } from 'src/app/helpers/utils.helper';
 import { AlertService } from 'src/app/services/alert.service';
 import { ApiService } from 'src/app/services/api.service';
+import { DriverService } from 'src/app/services/driver.service';
 
 @Component({
   selector: 'app-register',
@@ -24,6 +25,7 @@ export class RegisterPage implements OnInit, OnDestroy {
 
   constructor(
     private apiSrv: ApiService,
+    private driverSrv: DriverService,
     private formBuilder: FormBuilder,
     private alertSrv: AlertService,
     private navCtrl: NavController
@@ -83,8 +85,9 @@ export class RegisterPage implements OnInit, OnDestroy {
 
         this.apiSrv.register(data)
           .pipe(takeUntil(this.unsubscribe$))
-          .subscribe(() => {
+          .subscribe(res => {
             this.loading = false;
+            this.driverSrv.setDriver(res.data.driver);
             this.navCtrl.navigateRoot('/dashboard');
           }, () => {
             this.loading = false;
