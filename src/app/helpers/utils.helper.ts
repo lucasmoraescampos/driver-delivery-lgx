@@ -1,5 +1,19 @@
 export class UtilsHelper {
 
+    public static utcOffsetString(seconds: number) {
+
+        const date = new Date(0);
+
+        date.setSeconds(Math.abs(seconds));
+
+        const time = date.toISOString().slice(11, 16);
+
+        const str = seconds < 0 ? 'UTC-' + time : 'UTC+' + time;
+
+        return str;
+
+    }
+
     public static base64toBlob(dataURL: string) {
 
         const type = dataURL.split(';')[0].substr(5);

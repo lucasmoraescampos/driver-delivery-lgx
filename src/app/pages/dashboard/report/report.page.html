@@ -16,11 +16,13 @@
 
     <div class="input-group">
 
-      <ion-datetime value="2019-10-01T15:43:40.394Z" display-timezone="utc"></ion-datetime>
+      <ion-datetime display-format="MMM DD YYYY" picker-format="YYYY-MMM-DD" [max]="endDate" [(ngModel)]="startDate">
+      </ion-datetime>
 
-      <ion-datetime value="2019-10-01T15:43:40.394Z" display-timezone="utc"></ion-datetime>
+      <ion-datetime display-format="MMM DD YYYY" picker-format="YYYY-MMM-DD" [min]="startDate" [max]="today"
+        [(ngModel)]="endDate"></ion-datetime>
 
-      <ion-button class="search" size="small" expand="block">
+      <ion-button class="search" size="small" expand="block" (click)="load()">
 
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
 
@@ -32,23 +34,17 @@
 
   <ion-toolbar>
 
-    <ion-segment mode="md" [(ngModel)]="segment">
+    <ion-segment mode="md" [value]="0" (ionChange)="segmentChanged($event)">
 
       <ion-segment-button [value]="0">
 
-        <ion-label>On Time</ion-label>
+        <ion-label>Resume</ion-label>
 
       </ion-segment-button>
 
       <ion-segment-button [value]="1">
 
-        <ion-label>Bags</ion-label>
-
-      </ion-segment-button>
-
-      <ion-segment-button [value]="2">
-
-        <ion-label>Average</ion-label>
+        <ion-label>Details</ion-label>
 
       </ion-segment-button>
 
@@ -58,244 +54,78 @@
 
 </ion-header>
 
-<ion-content color="light">
-
-  <ion-card *ngIf="segment == 0">
-
-    <ion-card-header>
-
-      <ion-button class="download" fill="solid" size="small">Download</ion-button>
-
-    </ion-card-header>
-
-    <ion-card-content>
-
-      <ion-list>
-
-        <ion-item lines="full">
-
-          <div class="date">
-              
-            <span class="day">01</span> 
-
-            <span class="month">Oct</span>
-          
-          </div>
-
-          <ion-label>
-            
-            <p><span>Early:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-
-            <p><span>On Time:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-
-            <p><span>Late:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-          
-          </ion-label>
-
-        </ion-item>
-
-        <ion-item lines="full">
-
-          <div class="date">
-              
-            <span class="day">01</span> 
-
-            <span class="month">Oct</span>
-          
-          </div>
-
-          <ion-label>
-            
-            <p><span>Early:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-
-            <p><span>On Time:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-
-            <p><span>Late:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-          
-          </ion-label>
-
-        </ion-item>
-
-        <ion-item lines="full">
-
-          <div class="date">
-              
-            <span class="day">01</span> 
-
-            <span class="month">Oct</span>
-          
-          </div>
-
-          <ion-label>
-            
-            <p><span>Early:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-
-            <p><span>On Time:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-
-            <p><span>Late:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-          
-          </ion-label>
-
-        </ion-item>
-
-        <ion-item lines="full">
-
-          <div class="date">
-              
-            <span class="day">01</span> 
-
-            <span class="month">Oct</span>
-          
-          </div>
-
-          <ion-label>
-            
-            <p><span>Early:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-
-            <p><span>On Time:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-
-            <p><span>Late:</span><ion-badge color="light" mode="ios">100</ion-badge></p>
-          
-          </ion-label>
-
-        </ion-item>
-
-      </ion-list>
-
-    </ion-card-content>
-
-  </ion-card>
-
-  <ion-card *ngIf="segment == 1">
-
-    <ion-card-header>
-
-      <ion-button class="download" fill="solid" size="small">Download</ion-button>
-
-    </ion-card-header>
-
-    <ion-card-content>
-
-      <ion-list>
-
-        <ion-item lines="full">
-
-          <span slot="start">21 Oct</span>
-
-          <ion-label class="ion-text-end">
-            
-            <ion-badge color="light">10 Bags</ion-badge>
-          
-          </ion-label>
-
-        </ion-item>
-
-        <ion-item lines="full">
-
-          <span slot="start">21 Oct</span>
-
-          <ion-label class="ion-text-end">
-            
-            <ion-badge color="light">10 Bags</ion-badge>
-          
-          </ion-label>
-
-        </ion-item>
-
-        <ion-item lines="full">
-
-          <span slot="start">21 Oct</span>
-
-          <ion-label class="ion-text-end">
-            
-            <ion-badge color="light">10 Bags</ion-badge>
-          
-          </ion-label>
-
-        </ion-item>
-
-        <ion-item lines="full">
-
-          <span slot="start">21 Oct</span>
-
-          <ion-label class="ion-text-end">
-            
-            <ion-badge color="light">10 Bags</ion-badge>
-          
-          </ion-label>
-
-        </ion-item>
-
-      </ion-list>
-
-    </ion-card-content>
-
-  </ion-card>
-
-  <ion-card *ngIf="segment == 2">
-
-    <ion-card-header>
-
-      <ion-button class="download" fill="solid" size="small">Download</ion-button>
-
-    </ion-card-header>
-
-    <ion-card-content>
-
-      <ion-list>
-
-        <ion-item lines="full">
-
-          <span slot="start">21 Oct</span>
-
-          <ion-label class="ion-text-end">
-            
-            <ion-badge color="light">4.9</ion-badge>
-          
-          </ion-label>
-
-        </ion-item>
-
-        <ion-item lines="full">
-
-          <span slot="start">21 Oct</span>
-
-          <ion-label class="ion-text-end">
-            
-            <ion-badge color="light">4.9</ion-badge>
-          
-          </ion-label>
-
-        </ion-item>
-
-        <ion-item lines="full">
-
-          <span slot="start">21 Oct</span>
-
-          <ion-label class="ion-text-end">
-            
-            <ion-badge color="light">4.9</ion-badge>
-          
-          </ion-label>
-
-        </ion-item>
-
-        <ion-item lines="full">
-
-          <span slot="start">21 Oct</span>
-
-          <ion-label class="ion-text-end">
-            
-            <ion-badge color="light">4.9</ion-badge>
-          
-          </ion-label>
-
-        </ion-item>
-
-      </ion-list>
-
-    </ion-card-content>
-
-  </ion-card>
+<ion-content>
+
+  <app-loading2 [show]="loading"></app-loading2>
+
+  <ion-slides class="swiper-no-swiping">
+
+    <ion-slide>
+      <ion-grid class="report">
+        <div class="head">
+          <ion-row>
+            <ion-col>Date</ion-col>
+            <ion-col>Early</ion-col>
+            <ion-col>On Time</ion-col>
+            <ion-col>Late</ion-col>
+            <ion-col>Bags</ion-col>
+            <ion-col>Average</ion-col>
+          </ion-row>
+        </div>
+        <div class="body">
+          <ion-row *ngFor="let r of report">
+            <ion-col>{{ r.date | date:'dd MMM YYYY' }}</ion-col>
+            <ion-col>{{ r.early.value }} <small>({{ r.early.percent }}%)</small></ion-col>
+            <ion-col>{{ r.on_time.value }} <small>({{ r.on_time.percent }}%)</small></ion-col>
+            <ion-col>{{ r.late.value }} <small>({{ r.late.percent }}%)</small></ion-col>
+            <ion-col>{{ r.bags }}</ion-col>
+            <ion-col>{{ r.avg }}</ion-col>
+          </ion-row>
+        </div>
+      </ion-grid>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-grid class="details">
+        <div class="head">
+          <ion-row>
+            <ion-col>Date</ion-col>
+            <ion-col>Project</ion-col>
+            <ion-col>Delivery window</ion-col>
+            <ion-col>Stop number</ion-col>
+            <ion-col>Started at</ion-col>
+            <ion-col>Arrived at / Skipped at</ion-col>
+            <ion-col>In window</ion-col>
+            <ion-col>Order id</ion-col>
+            <ion-col>Status</ion-col>
+            <ion-col>Stop</ion-col>
+            <ion-col>Phone</ion-col>
+            <ion-col>Address</ion-col>
+            <ion-col>Distance</ion-col>
+            <ion-col>Duration</ion-col>
+          </ion-row>
+        </div>
+        <div class="body">
+          <ion-row *ngFor="let detail of details">
+            <ion-col>{{ detail.date | date }}</ion-col>
+            <ion-col>{{ detail.project }}</ion-col>
+            <ion-col>{{ detail.start_time }} - {{ detail.end_time }}</ion-col>
+            <ion-col>{{ detail.number }}</ion-col>
+            <ion-col>{{ formatDate(detail.started_at, detail.utc_offset) }}</ion-col>
+            <ion-col>{{ formatDate(detail.finished_at, detail.utc_offset) }}</ion-col>
+            <ion-col>{{ detail.in_window }}</ion-col>
+            <ion-col>{{ detail.order_id }}</ion-col>
+            <ion-col>{{ detail.status }}</ion-col>
+            <ion-col>{{ detail.stop }}</ion-col>
+            <ion-col>{{ detail.phone }}</ion-col>
+            <ion-col>{{ detail.address }}</ion-col>
+            <ion-col>{{ detail.distance }}</ion-col>
+            <ion-col>{{ detail.duration }}</ion-col>
+          </ion-row>
+        </div>
+      </ion-grid>
+    </ion-slide>
+
+  </ion-slides>
 
 </ion-content>

@@ -1,31 +1,8 @@
-ion-card {
-    margin: 16px;
-}
-
-ion-card-header {
-    text-align: right;
-
-    ion-button {
-        --border-radius: 25px;
-    }
-}
-
 ion-datetime {
     --padding-start: 16px;
     --padding-end: 16px;
     background: var(--ion-color-light);
     width: 100%;
-}
-
-p {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 0;
-}
-
-ion-item:last-child {
-    --border-width: 0;
 }
 
 .input-group {
@@ -44,24 +21,75 @@ ion-item:last-child {
     }
 }
 
-.date {
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: center;
-    height: 70px;
-    width: 60px;
-    margin-right: 20px;
-    background: var(--ion-color-light);
+ion-slides {
+    display: block;
+    height: 100%;
+}
 
-    .day {
-        font-size: 1.125rem;
+ion-grid {
+    flex-wrap: nowrap;
+	overflow: auto;
+    padding: 0;
+    height: 100%;
+
+    .head {
+        background: var(--ion-color-primary); /* fallback for old browsers */
+        background: -webkit-linear-gradient(to left, #fdc680,vvar(--ion-color-primary)); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to left, #fdc680, var(--ion-color-primary));
+        color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 99999;
+        padding: 5px 0;
+
+        ion-col {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-align: center;
+        }
     }
 
-    .month {
-        font-size: 0.9rem;
-        color: var(--ion-color-medium);
+    .body {
+        ion-row:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        ion-col {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.9rem;
+
+            small {
+                margin-left: 5px;
+            }
+        }
+    }
+
+    &.report {
+        .head,
+        .body {
+            min-width: 464px;
+        }
+    }
+
+    &.details {
+        .head,
+        .body {
+            min-width: 2415px;
+        }
+    }
+
+    @media (pointer: fine) {
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: var(--ion-color-light-shade);
+        }
     }
 }
 

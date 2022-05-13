@@ -1,0 +1,31 @@
+.loading {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999999;
+    transition: margin 300ms cubic-bezier(0.17, 0.04, 0.03, 0.94);
+    transition: all 0.2s linear;
+
+    &.show {
+        top: 10px;
+    }
+
+    .spinner {
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 0;
+        margin-bottom: 0;
+        border-radius: 100%;
+        padding-left: 8px;
+        padding-right: 8px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        display: -ms-flexbox;
+        display: flex;
+        border: 1px solid var(--ion-color-step-200, #ececec);
+        background: var(--ion-color-step-250, #ffffff);
+        -webkit-box-shadow: 0px 1px 6px rgb(0 0 0 / 10%);
+        box-shadow: 0px 1px 6px rgb(0 0 0 / 10%);
+    }
+}

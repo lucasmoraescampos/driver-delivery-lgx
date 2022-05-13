@@ -10,7 +10,7 @@
 
           <img src="../../../assets/image/logo-full.png">
 
-          <ion-note>Hello Lucas!</ion-note>
+          <ion-note>Hello {{ driver?.name.split(' ')[0] }}!</ion-note>
 
         </ion-toolbar>
 
@@ -50,7 +50,5 @@
     <ion-router-outlet id="main"></ion-router-outlet>
 
   </ion-split-pane>
-
-  <app-loading></app-loading>
 
 </ion-app>

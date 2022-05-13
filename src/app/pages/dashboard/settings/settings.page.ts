@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { AlertService } from 'src/app/services/alert.service';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { UtilsHelper } from 'src/app/helpers/utils.helper';
+import { DriverService } from 'src/app/services/driver.service';
 
 const { Camera, Device } = Plugins;
 @Component({
@@ -40,6 +41,7 @@ export class SettingsPage implements OnInit, OnDestroy {
   private unsubscribe$ = new Subject();
 
   constructor(
+    private driverSrv: DriverService,
     private apiSrv: ApiService,
     private formBuilder: FormBuilder,
     private alertSrv: AlertService,
@@ -48,15 +50,21 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.driver = JSON.parse(localStorage.getItem('driver'));
-
     Device.getInfo().then(device => this.webUseInput = device.platform === 'web');
 
-    this.formGroup = this.formBuilder.group({
-      name: [this.driver.name, Validators.required],
-      email: [this.driver.email, Validators.required],
-      phone: [this.driver.phone.slice(1), Validators.required]
-    });
+    this.driverSrv.getDriver()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(driver => {
+
+        this.driver = driver;
+
+        this.formGroup = this.formBuilder.group({
+          name: [this.driver.name, Validators.required],
+          email: [this.driver.email, Validators.required],
+          phone: [this.driver.phone.slice(1), Validators.required]
+        });
+
+      });
 
   }
 

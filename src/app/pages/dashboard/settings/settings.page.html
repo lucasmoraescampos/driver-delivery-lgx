@@ -31,15 +31,15 @@
     <ion-slide>
       <div class="ion-scroll">
         <ion-list class="ion-no-padding">
-          <ion-item class="gradient-primary" lines="none" *ngIf="!driver.email || driver.status == 0">
+          <ion-item class="gradient-primary animate__animated animate__fadeIn" lines="none" *ngIf="!driver?.email || driver?.status == 0">
             <ion-icon slot="start" name="information-circle-outline"></ion-icon>
             <ion-label class="ion-text-wrap">
               <h2>Complete your registration!</h2>
-              <p *ngIf="!driver.email">* Add your email to your profile.</p>
-              <p *ngIf="driver.status == 0">* Send us your driving license and your car insurance.</p>
+              <p *ngIf="!driver?.email">* Add your email to your profile.</p>
+              <p *ngIf="driver?.status == 0">* Send us your driving license and your car insurance.</p>
             </ion-label>
           </ion-item>
-          <ion-item lines="none" color="success" *ngIf="driver.status == 1 && driver.email">
+          <ion-item class="animate__animated animate__fadeIn" lines="none" color="success" *ngIf="driver?.status == 1 && driver?.email">
             <ion-icon slot="start" name="information-circle-outline"></ion-icon>
             <ion-label class="ion-text-wrap">
               <h2>Documents sent!</h2>
@@ -47,24 +47,24 @@
             </ion-label>
           </ion-item>
           <ion-item lines="full" button="true" detail="true" (click)="slides.slideTo(1)">
-            <ion-icon slot="start" name="person-circle-outline" *ngIf="driver.email"></ion-icon>
-            <ion-icon class="animate__animated animate__pulse animate__infinite" slot="start" name="alert-circle-outline" color="primary" *ngIf="!driver.email"></ion-icon>
+            <ion-icon slot="start" name="person-circle-outline" *ngIf="driver?.email"></ion-icon>
+            <ion-icon class="animate__animated animate__pulse animate__infinite" slot="start" name="alert-circle-outline" color="primary" *ngIf="!driver?.email"></ion-icon>
             <ion-label>
               <h4>Profile</h4>
               <p>Name, Email, Phone</p>
             </ion-label>
           </ion-item>
           <ion-item lines="full" button="true" detail="true" (click)="slides.slideTo(2)">
-            <ion-icon slot="start" name="id-card-outline" *ngIf="driver.license"></ion-icon>
-            <ion-icon class="animate__animated animate__pulse animate__infinite" slot="start" name="alert-circle-outline" color="primary" *ngIf="!driver.license"></ion-icon>
+            <ion-icon slot="start" name="id-card-outline" *ngIf="driver?.license"></ion-icon>
+            <ion-icon class="animate__animated animate__pulse animate__infinite" slot="start" name="alert-circle-outline" color="primary" *ngIf="!driver?.license"></ion-icon>
             <ion-label>
               <h4>License</h4>
               <p>Driver License</p>
             </ion-label>
           </ion-item>
           <ion-item lines="full" button="true" detail="true" (click)="slides.slideTo(3)">
-            <ion-icon slot="start" name="car-outline" *ngIf="driver.insurance"></ion-icon>
-            <ion-icon class="animate__animated animate__pulse animate__infinite" slot="start" name="alert-circle-outline" color="primary" *ngIf="!driver.insurance"></ion-icon>
+            <ion-icon slot="start" name="car-outline" *ngIf="driver?.insurance"></ion-icon>
+            <ion-icon class="animate__animated animate__pulse animate__infinite" slot="start" name="alert-circle-outline" color="primary" *ngIf="!driver?.insurance"></ion-icon>
             <ion-label>
               <h4>Insurance</h4>
               <p>Car Insurance</p>
@@ -119,14 +119,14 @@
           <ion-label>
             <p>Driver License</p>
           </ion-label>
-          <ion-button class="choose-image" fill="clear" (click)="chooseLicense()" *ngIf="!driver.license">
+          <ion-button class="choose-image" fill="clear" (click)="chooseLicense()" *ngIf="!driver?.license">
             <div>
               <ion-icon name="image-outline"></ion-icon>
               Choose Image
             </div>
           </ion-button>
-          <ion-thumbnail (click)="chooseLicense()" *ngIf="driver.license">
-            <img [src]="driver.license">
+          <ion-thumbnail (click)="chooseLicense()" *ngIf="driver?.license">
+            <img [src]="driver?.license">
           </ion-thumbnail>
         </div>
       </div>
@@ -138,14 +138,14 @@
           <ion-label>
             <p>Car Insurance</p>
           </ion-label>
-          <ion-button class="choose-image" fill="clear" (click)="chooseInsurance()" *ngIf="!driver.insurance">
+          <ion-button class="choose-image" fill="clear" (click)="chooseInsurance()" *ngIf="!driver?.insurance">
             <div>
               <ion-icon name="image-outline"></ion-icon>
               Choose Image
             </div>
           </ion-button>
-          <ion-thumbnail (click)="chooseInsurance()" *ngIf="driver.insurance">
-            <img [src]="driver.insurance">
+          <ion-thumbnail (click)="chooseInsurance()" *ngIf="driver?.insurance">
+            <img [src]="driver?.insurance">
           </ion-thumbnail>
         </div>
       </div>

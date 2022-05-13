@@ -151,7 +151,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                     const message = `Rate and Tip your delivery hero with the following link: ${environment.appUrl}/tips/${res.data.driver.order_id}/${res.data.driver.phone}`;
 
-                    this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
+                    // this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
 
                   });
 
@@ -196,7 +196,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                         const message = `Rate and Tip your delivery hero with the following link: ${environment.appUrl}/tips/${res.data.driver.order_id}/${res.data.driver.phone}`;
     
-                        this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
+                        // this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
     
                       });
 
@@ -252,7 +252,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                     const message = `Rate and Tip your delivery hero with the following link: ${environment.appUrl}/tips/${res.data.driver.order_id}/${res.data.driver.phone}`;
 
-                    this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
+                    // this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
 
                   });
 
@@ -297,7 +297,7 @@ export class ArriveStopComponent implements OnInit, OnDestroy {
 
                         const message = `Rate and Tip your delivery hero with the following link: ${environment.appUrl}/tips/${res.data.driver.order_id}/${res.data.driver.phone}`;
     
-                        this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
+                        // this.apiSrv.sendSMSByFariasSMS(route.end_name, route.end_phone, message).toPromise();
     
                       });
 

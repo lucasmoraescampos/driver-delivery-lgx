@@ -3,7 +3,7 @@ import { NavController } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ApiService } from 'src/app/services/api.service';
-import { LoadingService } from 'src/app/services/loading.service';
+import { DriverService } from 'src/app/services/driver.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,6 +11,8 @@ import { LoadingService } from 'src/app/services/loading.service';
   styleUrls: ['./dashboard.page.scss'],
 })
 export class DashboardPage implements OnInit, OnDestroy {
+
+  public driver: any;
 
   public appPages = [
     { title: 'Home',      url: '/dashboard/home',     icon: 'home-outline',     disabled: false },
@@ -23,11 +25,12 @@ export class DashboardPage implements OnInit, OnDestroy {
   constructor(
     private navCtrl: NavController,
     private apiSrv: ApiService,
-    private loadingSrv: LoadingService
+    private driverSrv: DriverService
   ) { }
 
   ngOnInit() {
     this.checkDriverStatus();
+    this.statusListener();
   }
 
   ngOnDestroy() {
@@ -36,29 +39,43 @@ export class DashboardPage implements OnInit, OnDestroy {
   }
 
   public logout() {
-    this.loadingSrv.show();
     this.apiSrv.logout()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(res => {
-        this.loadingSrv.hide();
         localStorage.clear();
         this.navCtrl.navigateRoot('/login');
       }, err => {
-        this.loadingSrv.hide();
         localStorage.clear();
         this.navCtrl.navigateRoot('/login');
       });
   }
 
   private checkDriverStatus() {
-    const driver = JSON.parse(localStorage.getItem('driver'));
-    if (!driver.email || driver.status == 0) {
-      this.appPages.forEach(p => {
-        if (p.url != '/dashboard/settings') {
-          p.disabled = true;
-        }
+    this.driverSrv.getDriver()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(driver => {
+        this.driver = driver;
+          this.appPages.forEach(p => {
+            if (p.url != '/dashboard/settings') {
+              if (!driver.email || driver.status == 0) {
+                p.disabled = true;
+              }
+              else {
+                p.disabled = false;
+              }
+            }
+          });
       });
-    }
+  }
+
+  private statusListener() {
+    setInterval(() => {
+      this.apiSrv.getStatus()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe(res => {
+          this.driverSrv.setStatus(res.data);
+        });
+    }, 10000);
   }
 
 }

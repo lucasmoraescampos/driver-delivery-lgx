@@ -64,6 +64,10 @@ export class ApiService {
     return this.http.post<HttpResult>(`${this.apiUrl}/user/logout`, { token });
   }
 
+  public getStatus() {
+    return this.http.get<HttpResult>(`${this.apiUrl}/driver/status`);
+  }
+
   public getProjects() {    
     return this.http.get<HttpResult>(`${this.apiUrl}/driver/${this.driverHash}/projects`);
   }
@@ -143,6 +147,14 @@ export class ApiService {
   
   public sendSMSByNexmoAPI(phone: string, message: string) {
     return this.http.post<HttpResult>(`${this.apiUrl}/driver/send-sms`, { phone, message });
+  }
+
+  public report(params: any) {
+    return this.http.get<HttpResult>(`${this.apiUrl}/driver/report`, { params: params });
+  }
+
+  public reportDetails(params: any) {
+    return this.http.get<HttpResult>(`${this.apiUrl}/driver/report/details`, { params: params });
   }
 
 }
