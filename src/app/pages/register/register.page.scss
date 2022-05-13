@@ -5,9 +5,10 @@
 
     .part1 {
         display: none;
-        background-image: url(../../../assets/image/bg_login.jpg);
+        background-image: url(../../../assets/image/bg_login.webp);
         background-size: cover;
         background-repeat: no-repeat;
+        background-position-x: center;
     }
 
     .part2 {
@@ -40,7 +41,7 @@ ion-input {
 
 .input-group {
     display: flex;
-    
+
     ion-input {
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
@@ -67,9 +68,15 @@ ion-input {
     }
 }
 
-ion-button b {
-    font-weight: 400;
-    color: var(--ion-color-primary);
+ion-button {
+    span {
+        line-height: 1.25rem;
+    }
+
+    b {
+        font-weight: 400;
+        color: var(--ion-color-primary);
+    }
 }
 
 @media (min-width: 768px) {

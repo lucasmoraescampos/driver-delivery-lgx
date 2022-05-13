@@ -20,6 +20,8 @@ export class DashboardPage implements OnInit, OnDestroy {
     { title: 'Settings',  url: '/dashboard/settings', icon: 'settings-outline', disabled: false }
   ];
 
+  private statusListenerInterval: ReturnType<typeof setInterval>;
+
   private unsubscribe$ = new Subject();
 
   constructor(
@@ -36,6 +38,7 @@ export class DashboardPage implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+    clearInterval(this.statusListenerInterval);
   }
 
   public logout() {
@@ -69,7 +72,7 @@ export class DashboardPage implements OnInit, OnDestroy {
   }
 
   private statusListener() {
-    setInterval(() => {
+    this.statusListenerInterval = setInterval(() => {
       this.apiSrv.getStatus()
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(res => {

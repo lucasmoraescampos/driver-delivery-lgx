@@ -1,14 +1,14 @@
-<ion-header>
+<ion-header class="animate__animated animate__fadeIn">
 
   <ion-toolbar>
+    
+    <ion-title>Report</ion-title>
 
-    <ion-buttons slot="start">
+    <ion-buttons slot="end">
 
       <ion-menu-button></ion-menu-button>
 
     </ion-buttons>
-
-    <ion-title>Report</ion-title>
 
   </ion-toolbar>
 
@@ -54,16 +54,16 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content class="animate__animated animate__fadeIn" [scrollY]="false">
 
   <app-loading2 [show]="loading"></app-loading2>
 
-  <ion-slides class="swiper-no-swiping">
+  <ion-slides class="swiper-no-swiping" *ngIf="report?.length > 0">
 
     <ion-slide>
       <ion-grid class="report">
-        <div class="head">
-          <ion-row>
+        <div class="head" *ngIf="report?.length > 0">
+          <ion-row class="animate-pop-in" [style]="{ '--animation-order': 0 }">
             <ion-col>Date</ion-col>
             <ion-col>Early</ion-col>
             <ion-col>On Time</ion-col>
@@ -73,7 +73,7 @@
           </ion-row>
         </div>
         <div class="body">
-          <ion-row *ngFor="let r of report">
+          <ion-row class="animate-pop-in" [style]="{ '--animation-order': i+1 }" *ngFor="let r of report; let i=index">
             <ion-col>{{ r.date | date:'dd MMM YYYY' }}</ion-col>
             <ion-col>{{ r.early.value }} <small>({{ r.early.percent }}%)</small></ion-col>
             <ion-col>{{ r.on_time.value }} <small>({{ r.on_time.percent }}%)</small></ion-col>
@@ -87,8 +87,8 @@
 
     <ion-slide>
       <ion-grid class="details">
-        <div class="head">
-          <ion-row>
+        <div class="head" *ngIf="details?.length > 0">
+          <ion-row class="animate-pop-in" [style]="{ '--animation-order': 0 }">
             <ion-col>Date</ion-col>
             <ion-col>Project</ion-col>
             <ion-col>Delivery window</ion-col>
@@ -106,7 +106,7 @@
           </ion-row>
         </div>
         <div class="body">
-          <ion-row *ngFor="let detail of details">
+          <ion-row class="animate-pop-in" [style]="{ '--animation-order': i+1 }" *ngFor="let detail of details; let i=index">
             <ion-col>{{ detail.date | date }}</ion-col>
             <ion-col>{{ detail.project }}</ion-col>
             <ion-col>{{ detail.start_time }} - {{ detail.end_time }}</ion-col>
@@ -127,5 +127,11 @@
     </ion-slide>
 
   </ion-slides>
+
+  <ion-grid class="animate__animated animate__fadeIn">
+    <ion-row class="ion-padding animate-pop-in" [style]="{ '--animation-order': 1 }" *ngIf="report?.length == 0">
+      <ion-col class="ion-text-center">No work done in this period</ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>

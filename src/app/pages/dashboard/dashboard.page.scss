@@ -70,11 +70,20 @@ ion-menu.ios ion-list#labels-list ion-list-header {
     margin-bottom: 8px;
 }
 
-ion-note {
-    display: block;
-    font-size: 16px;
-    color: var(--ion-color-medium-shade);
-    margin: 50px 0 30px;
+ion-item.user {
+    margin-top: 30px;
+
+    ion-icon {
+        font-size: 22px;
+        margin-right: 5px;
+    }
+
+    ion-label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+    }
 }
 
 ion-item.selected {

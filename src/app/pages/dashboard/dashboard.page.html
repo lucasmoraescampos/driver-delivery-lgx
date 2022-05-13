@@ -10,7 +10,12 @@
 
           <img src="../../../assets/image/logo-full.png">
 
-          <ion-note>Hello {{ driver?.name.split(' ')[0] }}!</ion-note>
+          <ion-item class="user" lines="none">
+            <ion-label>
+              <ion-icon name="person-circle-outline"></ion-icon>
+              Hello {{ driver?.name.split(' ')[0] }}!
+            </ion-label>
+          </ion-item>
 
         </ion-toolbar>
 

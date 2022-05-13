@@ -81,6 +81,16 @@ textarea {
     --min-height: calc(100vh - 100px);
 }
 
+.animate-pop-in {
+    animation: popIn 0.2s calc(var(--animation-order) * 30ms) both ease-in;
+}
+
+.ion-text-grad {
+    background: -webkit-linear-gradient(var(--ion-color-primary), var(--ion-color-primary-tint));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
 @media (min-width: 576px) {
     .choose-map .modal-wrapper {
         width: 300px;

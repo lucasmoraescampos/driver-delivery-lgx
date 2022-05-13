@@ -1,15 +1,11 @@
-<ion-header>
+<ion-header class="animate__animated animate__fadeIn">
 
   <ion-toolbar>
 
-    <ion-buttons slot="start">
-
-      <ion-menu-button class="animate__animated animate__fadeIn" *ngIf="slideActiveIndex == 0"></ion-menu-button>
-      
+    <ion-buttons slot="start">      
       <ion-button class="animate__animated animate__fadeIn" (click)="slides.slideTo(0)" *ngIf="slideActiveIndex > 0">
         <ion-icon slot="icon-only" ios="chevron-back-outline" md="arrow-back-outline"></ion-icon>
       </ion-button>
-
     </ion-buttons>
 
     <ion-title class="animate__animated animate__fadeIn" *ngIf="slideActiveIndex == 0">Settings</ion-title>
@@ -20,18 +16,22 @@
 
     <ion-title class="animate__animated animate__fadeIn" *ngIf="slideActiveIndex == 3">Insurance</ion-title>
 
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+
   </ion-toolbar>
 
 </ion-header>
 
-<ion-content class="animate__animated animate__fadeIn">
+<ion-content>
 
   <ion-slides class="swiper-no-swiping" (ionSlideWillChange)="slideChanged($event)">
 
     <ion-slide>
       <div class="ion-scroll">
         <ion-list class="ion-no-padding">
-          <ion-item class="gradient-primary animate__animated animate__fadeIn" lines="none" *ngIf="!driver?.email || driver?.status == 0">
+          <ion-item class="gradient-primary animate-pop-in" lines="none" [style]="{ '--animation-order': 0 }" *ngIf="!driver?.email || driver?.status == 0">
             <ion-icon slot="start" name="information-circle-outline"></ion-icon>
             <ion-label class="ion-text-wrap">
               <h2>Complete your registration!</h2>
@@ -39,14 +39,14 @@
               <p *ngIf="driver?.status == 0">* Send us your driving license and your car insurance.</p>
             </ion-label>
           </ion-item>
-          <ion-item class="animate__animated animate__fadeIn" lines="none" color="success" *ngIf="driver?.status == 1 && driver?.email">
+          <ion-item class="animate-pop-in" lines="none" color="success" [style]="{ '--animation-order': 0 }" *ngIf="driver?.status == 1 && driver?.email">
             <ion-icon slot="start" name="information-circle-outline"></ion-icon>
             <ion-label class="ion-text-wrap">
               <h2>Documents sent!</h2>
               <p>Now just wait for the documents to be evaluated.</p>
             </ion-label>
           </ion-item>
-          <ion-item lines="full" button="true" detail="true" (click)="slides.slideTo(1)">
+          <ion-item class="animate-pop-in" lines="full" button="true" detail="true" [style]="{ '--animation-order': 1 }" (click)="slides.slideTo(1)">
             <ion-icon slot="start" name="person-circle-outline" *ngIf="driver?.email"></ion-icon>
             <ion-icon class="animate__animated animate__pulse animate__infinite" slot="start" name="alert-circle-outline" color="primary" *ngIf="!driver?.email"></ion-icon>
             <ion-label>
@@ -54,7 +54,7 @@
               <p>Name, Email, Phone</p>
             </ion-label>
           </ion-item>
-          <ion-item lines="full" button="true" detail="true" (click)="slides.slideTo(2)">
+          <ion-item class="animate-pop-in" lines="full" button="true" detail="true" [style]="{ '--animation-order': 2 }" (click)="slides.slideTo(2)">
             <ion-icon slot="start" name="id-card-outline" *ngIf="driver?.license"></ion-icon>
             <ion-icon class="animate__animated animate__pulse animate__infinite" slot="start" name="alert-circle-outline" color="primary" *ngIf="!driver?.license"></ion-icon>
             <ion-label>
@@ -62,7 +62,7 @@
               <p>Driver License</p>
             </ion-label>
           </ion-item>
-          <ion-item lines="full" button="true" detail="true" (click)="slides.slideTo(3)">
+          <ion-item class="animate-pop-in" lines="full" button="true" detail="true" [style]="{ '--animation-order': 3 }" (click)="slides.slideTo(3)">
             <ion-icon slot="start" name="car-outline" *ngIf="driver?.insurance"></ion-icon>
             <ion-icon class="animate__animated animate__pulse animate__infinite" slot="start" name="alert-circle-outline" color="primary" *ngIf="!driver?.insurance"></ion-icon>
             <ion-label>
@@ -70,13 +70,13 @@
               <p>Car Insurance</p>
             </ion-label>
           </ion-item>
-          <ion-item lines="full" button="true" detail="true" (click)="slides.slideTo(4)">
+          <ion-item class="animate-pop-in" lines="full" button="true" detail="true" [style]="{ '--animation-order': 4 }" (click)="slides.slideTo(4)">
             <ion-icon slot="start" name="key-outline"></ion-icon>
             <ion-label>
               <h4>Redefine password</h4>
             </ion-label>
           </ion-item>
-          <ion-item lines="full" button="true" detail="true" href="/terms-and-privacy-policy" target="_blank">
+          <ion-item class="animate-pop-in" lines="full" button="true" detail="true" href="/terms-and-privacy-policy" target="_blank" [style]="{ '--animation-order': 5 }">
             <ion-icon slot="start" name="reader-outline"></ion-icon>
             <ion-label>
               <h4>Terms and Conditions</h4>
