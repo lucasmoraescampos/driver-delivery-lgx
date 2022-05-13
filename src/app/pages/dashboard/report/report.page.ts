@@ -36,8 +36,8 @@ export class ReportPage implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.startDate  = '2022-03-01';
-    this.endDate    = '2022-03-30';
+    this.startDate  = this.today;
+    this.endDate    = this.today;
 
     this.load();
 
