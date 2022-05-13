@@ -52,18 +52,16 @@ export class SettingsPage implements OnInit, OnDestroy {
 
     Device.getInfo().then(device => this.webUseInput = device.platform === 'web');
 
+    this.formGroup = this.formBuilder.group({
+      name: ['', Validators.required],
+      email: ['', Validators.required],
+      phone: ['', Validators.required]
+    });
+
     this.driverSrv.getDriver()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(driver => {
-
         this.driver = driver;
-
-        this.formGroup = this.formBuilder.group({
-          name: [this.driver.name, Validators.required],
-          email: [this.driver.email, Validators.required],
-          phone: [this.driver.phone.slice(1), Validators.required]
-        });
-
       });
 
   }
@@ -78,7 +76,17 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   public slideChanged(ev: any) {
+
     this.slideActiveIndex = ev.target.swiper.activeIndex;
+
+    if (this.slideActiveIndex == 1) {
+      this.formGroup.patchValue({
+        name: this.driver.name,
+        email: this.driver.email,
+        phone: this.driver.phone.slice(1),
+      });
+    }
+    
   }
 
   public async chooseLicense() {
